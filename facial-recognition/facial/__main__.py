@@ -105,7 +105,7 @@ def main(args):
 
 	result = facialRec(ref, chunkdir, refimg)
 
-	ref = {"scenes" : True, "frames" : result}
+	ref = {"scene" : True, "scenes" : result}
 
 	return {
 		"status" : "Ok",

@@ -3,43 +3,16 @@ import os
 import cv2
 import numpy as np
 import boto3
-
-def push(chunkdir, key, access):
-
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-	
-    os.remove(chunkdir+".zip")
-
-    # create the chunk
-    args = [
-        chunkdir+".zip", 
-        chunkdir  
-    ]
-    subprocess.run(
-        ["zip", '-r'] + args,
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    )
-
-    # push the chunk to amazone S3
-    s3.upload_file(chunkdir+".zip", bucket_name, chunkdir+".zip")
-
-    return (chunkdir+".zip")
-
+ 
 
 def pull(chunkdir, key, access):
 
     chunkdir = chunkdir + ".zip"
-
     # connexion to Remote Storage
     bucket_name = 'donaldbucket'
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
- 
     # pull chunk from amazone S3
     s3.download_file(bucket_name, chunkdir, chunkdir)
-    
 	# unzip the chunk
     args = [
         chunkdir,
@@ -82,15 +55,12 @@ def sceneChange(chunkdir, scene_threshold=0.1):
                 frames.append(file)
 
         else:
-            
             frames.append(file)
 
         prev_frame = frame
 
     scene = {"face" : False, "frames" : frames, "box" : []}
-
     result.append(scene)
-    
     return result
 
  
@@ -99,9 +69,7 @@ def sceneChange(chunkdir, scene_threshold=0.1):
 def main(args):
 	
     key = args.get("key")
-    
     access = args.get("access")
-	
     chunkdir = args.get("chunkdir", "chunkdir")
     
     pull(chunkdir, key, access)
