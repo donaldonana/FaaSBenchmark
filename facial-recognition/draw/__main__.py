@@ -13,7 +13,6 @@ def push(chunkdir, key, access):
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
 
     os.remove(chunkdir + ".zip")
-    # create the chunk
     args = [
         chunkdir + ".zip", 
         chunkdir  
@@ -37,7 +36,6 @@ def pull(chunkdir, key, access):
     # connexion to Remote Storage
     bucket_name = 'donaldbucket'
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    # pull chunk from amazone S3
     s3.download_file(bucket_name, chunkdir, chunkdir)
 
 	# unzip the chunk
@@ -61,16 +59,20 @@ def draw(ref, chunkdir):
 
     if ref["scene"]:
         for scene in ref["scenes"]:
+
             if scene["face"]:
                 box = scene["box"]
+
                 for file in scene["frames"]:
                     path = os.path.join(chunkdir, file)
                     newpath = os.path.join("newchunkdir", file)
                     frame = cv2.imread(path)
                     cv2.rectangle(frame,  (box[0][0], box[0][1]) ,  (box[1][0], box[1][1]) , (0, 255, 0), 2)
                     cv2.imwrite(newpath, frame)
+
     else:
         files  = ref["scenes"].keys()
+
         for file in files:
             path = os.path.join(chunkdir, file)
             newpath = os.path.join("newchunkdir", file)
@@ -104,7 +106,7 @@ def main(args):
     return {
         "status" : "Ok",
         "ref" : ref,
-        "chunkdir": chunkdir,   # "chunkdir" toparam
+        "chunkdir": chunkdir,   
         "key" : args.get("key"),
         "access" : args.get("access")
     }
