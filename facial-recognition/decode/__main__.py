@@ -8,7 +8,6 @@ def push(chunkdir, key, access):
     # connexion to Remote Storage
     bucket_name = 'donaldbucket'
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-
     # create the chunk
     args = [
         chunkdir + ".zip", 
@@ -48,19 +47,20 @@ def decode(video, start, duration, chunkdir):
 
 
 def main(args):
+
+    # amazone key         
+    key = args.get("key")
+    access = args.get("access")
     
     # start decoding  at n seconds
     start = args.get("start", "00:00:06")   #toparam
     # decode n seconds of video               
     duration = args.get("duration", "00:00:06")  #toparam
     # Path to your input video
-    video = os.path.join("/app", 'queen.mp4')  #toparam
-    # amazone key         
-    key = args.get("key")
-    access = args.get("access")
-
     # "chunkdir" toparam
     chunkdir = args.get("chunkdir", "chunkdir")
+
+    video = os.path.join("/app", 'queen.mp4')  # pull to amazone
 
     decode(video, start, duration, chunkdir) # "chunkdir" toparam
     
