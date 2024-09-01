@@ -3,7 +3,7 @@ import os
 import boto3
 
 
-def push(framedir, key, access):
+def push(chunkdir, key, access):
 
     # connexion to Remote Storage
     bucket_name = 'donaldbucket'
@@ -11,8 +11,8 @@ def push(framedir, key, access):
 
     # create the chunk
     args = [
-        "frames.zip", 
-        framedir  
+        chunkdir + ".zip", 
+        chunkdir  
     ]
     subprocess.run(
         ["zip", '-r'] + args,
@@ -21,9 +21,9 @@ def push(framedir, key, access):
     )
  
     # push the chunk to amazone S3
-    s3.upload_file("frames.zip", bucket_name, "frames.zip")
+    s3.upload_file(chunkdir + ".zip", bucket_name, chunkdir + ".zip")
 
-    return ("frames.zip")
+    return ("Ok")
 
    
 
@@ -61,14 +61,14 @@ def main(args):
     access = args.get("access")
 
     # "chunkdir" toparam
+    chunkdir = args.get("chunkdir", "chunkdir")
 
-    decode(video, start, duration, 'chunkdir') # "chunkdir" toparam
-    
-    push('chunkdir', key, access) 
+    decode(video, start, duration, chunkdir) # "chunkdir" toparam
+    push(chunkdir, key, access) 
 	
     return {
         "status" : "Ok",
-        "chunkdir": "chunkdir",   # "chunkdir" toparam
+        "chunkdir": chunkdir,   # "chunkdir" toparam
         "key" : args.get("key"),
         "access" : args.get("access")
     }

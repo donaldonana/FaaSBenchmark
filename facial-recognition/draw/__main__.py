@@ -54,7 +54,7 @@ def pull(framedir, key, access):
     return ("frames")
 
 
-def draw(ref):
+def draw(ref, chunkdir):
 
 	files  = ref.keys()
 

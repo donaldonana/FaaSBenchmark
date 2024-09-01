@@ -9,14 +9,11 @@ import face_recognition
 def pull(chunkdir, key, access):
 
     chunkdir = chunkdir + ".zip"
-
     # connexion to Remote Storage
     bucket_name = 'donaldbucket'
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
- 
     # pull chunk from amazone S3
     s3.download_file(bucket_name, chunkdir, "/app/" + chunkdir)
-    
 	# unzip the chunk
     args = [
         "/app/" + chunkdir,
@@ -33,7 +30,6 @@ def pull(chunkdir, key, access):
 
 
 def matchFace(imgref):
-	
 	# Match face list
 	known_face_encodings = []
 	# load the reference image from S3
@@ -47,30 +43,23 @@ def matchFace(imgref):
 def facialRec(scenes, chunkdir, known_face_encodings):
 
 	result = []
-
 	chunkdir = "/app/"+chunkdir
 
 	for scene in scenes :
-
 		find = False
 		box = []
 
 		for file in scene["frames"] :
-
 			path = os.path.join(chunkdir, file)
-
 			frame = cv2.imread(path)
-
 			rgb_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 			face_locations = face_recognition.face_locations(rgb_frame)
 			face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
 
 			for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
-		
 				matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
 			
 				if matches[0] == True:
-
 					find = True
 					box = [(left, top), (right, bottom)]
 					break
@@ -81,7 +70,6 @@ def facialRec(scenes, chunkdir, known_face_encodings):
 		scene["box"] = box
 		scene["face"] = find
 		result.append(scene)
-
 
 	return result
 		

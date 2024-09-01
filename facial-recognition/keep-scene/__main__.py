@@ -12,7 +12,7 @@ def push(framedir, key, access):
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
 
     os.remove("frames.zip")
-
+    
     # create the chunk
     args = [
         "frames.zip", 
@@ -56,15 +56,15 @@ def pull(framedir, key, access):
     return ("/app/frames")
 
 
-def keep(ref):
-    
-    actual = [f for f in os.listdir("frames") if f.endswith('.png')]
-    final  = ref.keys()
+def keep(ref, chunkdir):
 
-    for file in actual:
-        if file not in final:
-            path =  os.path.join("frames", file)
-            os.remove(path)
+    files  = ref.keys()
+
+    for file in files:
+        path = os.path.join(chunkdir, file)
+        newpath = os.path.join("newchunkdir", file)
+        frame = cv2.imread(path)
+        cv2.imwrite(newpath, frame)
 
     return("frames")
 
