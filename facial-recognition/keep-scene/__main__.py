@@ -13,7 +13,6 @@ def push(chunkdir, key, access):
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
 
     os.remove(chunkdir + ".zip")
-    # create the chunk
     args = [
         chunkdir + ".zip", 
         chunkdir  
@@ -61,7 +60,6 @@ def keep(ref, chunkdir):
     os.makedirs("newchunkdir", exist_ok=True)
 
     if ref["scene"]:
-
         for scene in ref["scenes"]:
 
             if scene["face"]:
@@ -74,6 +72,7 @@ def keep(ref, chunkdir):
 
     else:
         files  = ref["scenes"].keys()
+
         for file in files:
             path = os.path.join(chunkdir, file)
             newpath = os.path.join("newchunkdir", file)
