@@ -31,7 +31,6 @@ def decode(video, start, duration, chunkdir):
      
     # ensure the output directory exists
     os.makedirs(chunkdir, exist_ok=True)
-	
     # decode 
     args = [
         "-i",  video, 
@@ -61,9 +60,11 @@ def main(args):
     key = args.get("key")
     access = args.get("access")
 
+    # "chunkdir" toparam
+
     decode(video, start, duration, 'chunkdir') # "chunkdir" toparam
     
-    push('chunkdir', key, access) # "chunkdir" toparam
+    push('chunkdir', key, access) 
 	
     return {
         "status" : "Ok",

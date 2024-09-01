@@ -31,7 +31,6 @@ def pull(framedir, key, access):
 
 
 def matchFace(imgref):
-	
 	# Match face list
 	known_face_encodings = []
 	# load the reference image from S3
