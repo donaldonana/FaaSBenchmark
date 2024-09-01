@@ -1,0 +1,6 @@
+resnet*.pth
+*.mp4
+*.png
+save.json
+saving.json
+*save*.json
