@@ -4,3 +4,4 @@ resnet*.pth
 save.json
 saving.json
 *save*.json
+*.json
