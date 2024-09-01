@@ -51,7 +51,7 @@ def pull(framedir, key, access):
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT	
     )
 
-    return ("frames")
+    return ("Ok")
 
 
 def draw(ref, chunkdir):

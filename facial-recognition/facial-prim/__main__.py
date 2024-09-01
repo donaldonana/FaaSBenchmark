@@ -5,19 +5,17 @@ import subprocess
 import face_recognition
 
 
+def pull(chunkdir, key, access):
 
-def pull(framedir, key, access):
-
+    chunkdir = chunkdir + ".zip"
     # connexion to Remote Storage
     bucket_name = 'donaldbucket'
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
- 
     # pull chunk from amazone S3
-    s3.download_file(bucket_name, framedir, "/app/" + framedir)
-    
+    s3.download_file(bucket_name, chunkdir, "/app/" + chunkdir)
 	# unzip the chunk
     args = [
-        "/app/" + framedir,
+        "/app/" + chunkdir,
 		"-d",
         "/app/"  
     ]
@@ -27,7 +25,7 @@ def pull(framedir, key, access):
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
 
-    return ("/app/frames")
+    return ("Ok")
 
 
 def matchFace(imgref):
@@ -40,49 +38,79 @@ def matchFace(imgref):
 
 	return known_face_encodings
 
-     
-def facialRecPrime(framedir, known_face_encodings):
-      
+  
+
+def facialRecPrime(scenes, chunkdir, known_face_encodings):
+
 	result = {}
-      
-	files = sorted([f for f in os.listdir(framedir) if f.endswith('.png')])
-    
-	for file in files:
+	chunkdir = "/app/"+chunkdir
+
+	if scenes:
+		for scene in scenes :
+
+			for file in scene["frames"] :
+				path = os.path.join(chunkdir, file)
+				frame = cv2.imread(path)
+				rgb_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+				face_locations = face_recognition.face_locations(rgb_frame)
+				face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+
+				for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
+					matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+				
+					if matches[0] == True:
+						box = [(left, top), (right, bottom)]
+						result[str(file)] = box
+
+		return result
+	
+	else:
+		files = sorted([f for f in os.listdir(chunkdir) if f.endswith('.png')])
+		for file in files:
             
-		path = os.path.join(framedir, file)
-		frame = cv2.imread(path)
-		rgb_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-		face_locations = face_recognition.face_locations(rgb_frame)
-		face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+			path = os.path.join(chunkdir, file)
+			frame = cv2.imread(path)
+			rgb_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+			face_locations = face_recognition.face_locations(rgb_frame)
+			face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
 
-		for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
-                  
-			matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-                  
-			if matches[0] == True:
-				box = [(left, top), (right, bottom)]
-				result[str(file)] = box
+			for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
+					
+				matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+					
+				if matches[0] == True:
+					box = [(left, top), (right, bottom)]
+					result[str(file)] = box
 
-	return result
-       
+		return result
 
 
+		
 def main(args):
 
     # amazone key         
 	key = args.get("key")
+
 	access = args.get("access")
 
-	video = os.path.join("/app", 'queen.png') 
+	chunkdir = args.get("chunkdir", "chunkdir")
 
-	framedir = pull("frames.zip", key, access)
+	video = os.path.join("/app", 'queen.png')  #toparam
+
+	ref = args.get("ref", None)
+
+	pull(chunkdir, key, access)
 
 	refimg = matchFace(video)
 
-	result = facialRecPrime(framedir, refimg)
+	result = facialRecPrime(ref, chunkdir, refimg)
 
-	return ({
-		"ref" : result,
+	ref = {"scene" : False, "scenes" : result}
+
+	return {
+		"status" : "Ok",
+		"ref" : ref,
+        "chunkdir": chunkdir ,   # "chunkdir" toparam
 		"key" : args.get("key"),
-        "access" : args.get("access")
-	})
+        "access" : args.get("access"),
+	}

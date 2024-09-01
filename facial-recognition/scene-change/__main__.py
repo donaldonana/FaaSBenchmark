@@ -28,7 +28,6 @@ def pull(chunkdir, key, access):
     return ("Ok")
 
 
-
 def sceneChange(chunkdir, scene_threshold=0.1):
 	
     prev_frame = None
@@ -61,17 +60,18 @@ def sceneChange(chunkdir, scene_threshold=0.1):
 
     scene = {"face" : False, "frames" : frames, "box" : []}
     result.append(scene)
+
     return result
 
  
-
-
 def main(args):
 	
     key = args.get("key")
+
     access = args.get("access")
+
     chunkdir = args.get("chunkdir", "chunkdir")
-    
+
     pull(chunkdir, key, access)
     
     result = sceneChange(chunkdir)

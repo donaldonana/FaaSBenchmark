@@ -24,7 +24,6 @@ def push(chunkdir, key, access):
     s3.upload_file(chunkdir + ".zip", bucket_name, chunkdir + ".zip")
 
     return ("Ok")
-
    
 
 def decode(video, start, duration, chunkdir):
@@ -64,6 +63,7 @@ def main(args):
     chunkdir = args.get("chunkdir", "chunkdir")
 
     decode(video, start, duration, chunkdir) # "chunkdir" toparam
+    
     push(chunkdir, key, access) 
 	
     return {

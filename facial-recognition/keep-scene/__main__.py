@@ -5,81 +5,107 @@ import shutil
 import boto3
 
 
-def push(framedir, key, access):
+
+def push(chunkdir, key, access):
 
     # connexion to Remote Storage
     bucket_name = 'donaldbucket'
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
 
-    os.remove("frames.zip")
-    
+    os.remove(chunkdir + ".zip")
     # create the chunk
     args = [
-        "frames.zip", 
-        "frames"  
+        chunkdir + ".zip", 
+        chunkdir  
     ]
     subprocess.run(
         ["zip", '-r'] + args,
         stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
-
-    # s3.delete_object(Bucket=bucket_name, Key="frames.zip")
  
     # push the chunk to amazone S3
-    s3.upload_file("frames.zip", bucket_name, "frames.zip")
+    s3.upload_file(chunkdir + ".zip", bucket_name, chunkdir + ".zip")
 
-    return ("frames.zip")
+    return ("Ok")
 
 
-def pull(framedir, key, access):
+def pull(chunkdir, key, access):
+
+    chunkdir = chunkdir + ".zip"
 
     # connexion to Remote Storage
     bucket_name = 'donaldbucket'
     s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
- 
     # pull chunk from amazone S3
-    s3.download_file(bucket_name, framedir, framedir)
-    
+    s3.download_file(bucket_name, chunkdir, chunkdir)
+
 	# unzip the chunk
     args = [
-        framedir,
+        chunkdir,
 		"-d",
         "./"  
     ]
     subprocess.run(
         ["unzip"] + args,
         stdin=subprocess.DEVNULL,
-        stdout=subprocess.PIPE, stderr=subprocess.STDOUT	
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
 
-    return ("/app/frames")
+    return ("Ok")
 
+ 
 
 def keep(ref, chunkdir):
 
-    files  = ref.keys()
+    os.makedirs("newchunkdir", exist_ok=True)
 
-    for file in files:
-        path = os.path.join(chunkdir, file)
-        newpath = os.path.join("newchunkdir", file)
-        frame = cv2.imread(path)
-        cv2.imwrite(newpath, frame)
+    if ref["scene"]:
 
-    return("frames")
+        for scene in ref["scenes"]:
+
+            if scene["face"]:
+
+                for file in scene["frames"]:
+                    path = os.path.join(chunkdir, file)
+                    newpath = os.path.join("newchunkdir", file)
+                    frame = cv2.imread(path)
+                    cv2.imwrite(newpath, frame)
+
+    else:
+        files  = ref["scenes"].keys()
+        for file in files:
+            path = os.path.join(chunkdir, file)
+            newpath = os.path.join("newchunkdir", file)
+            frame = cv2.imread(path)
+            cv2.imwrite(newpath, frame)
+
+    shutil.rmtree(chunkdir)
+    shutil.move("newchunkdir", chunkdir)
+
+    return("Ok")
 
 
 def main(args):
     
-	key = args.get("key")
-	access = args.get("access")
+    key = args.get("key")
     
-	ref = args.get("ref")
+    access = args.get("access")
     
-	framedir = pull("frames.zip", key, access)
+    ref = args.get("ref")
     
-	path =  keep(ref)
-
-	response = push(path, key, access)
-	
-	return {"body": str(sorted([f for f in os.listdir(path)]))}
+    chunkdir = args.get("chunkdir", "chunkdir")
+    
+    pull(chunkdir, key, access)
+    
+    keep(ref, chunkdir)
+    
+    push(chunkdir, key, access)
+    
+    return {
+        "status" : "Ok",
+        "ref" : ref,
+        "chunkdir": chunkdir,   # "chunkdir" toparam
+        "key" : args.get("key"),
+        "access" : args.get("access")
+    }
