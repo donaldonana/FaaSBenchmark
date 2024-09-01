@@ -10,8 +10,11 @@ wsk action update keep --timeout 50000 --memory 512 --docker onanad/action-pytho
 
 wsk action update facerecprim --timeout 600000 --memory 1024 --docker onanad/action-python-v3.9:facerecprim facial-prim/__main__.py --web true 
 
+wsk action update draw --timeout 50000 --memory 512 --docker onanad/action-python-v3.9:draw draw/__main__.py --web true 
 
 
-wsk action update S5 --sequence decode,scenechange,facerecprim,keep
+
+
+wsk action update S5 --sequence decode,scenechange,facerecprim,keep,draw
 
 wsk action invoke S5 -r --param key $AWS_ACCESS_KEY_ID  --param access $AWS_SECRET_ACCESS_KEY
