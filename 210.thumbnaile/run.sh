@@ -1,8 +1,10 @@
 #!/bin/bash
 
+IMAGE="500b.JPEG"
+
 # The list of library
 LIBRARY=("pillow" "wand" "pygame" "opencv")
-IMAGE="500b.JPEG"
+
 RESULT_FILE="result/result.txt"
 ENERGY_DIR="result/energy"
 mkdir -p "$ENERGY_DIR/$IMAGE"
@@ -19,7 +21,7 @@ for LIB in "${LIBRARY[@]}"; do
     # Launch cpu-energy-meter in background and save her PID
     cpu-energy-meter -r >> $ENERGY_FILE &
     METER_PID=$!
-    
+
     wsk action invoke thumb -r \
       --param bib "$LIB" \
       --param key $AWS_ACCESS_KEY_ID  \
