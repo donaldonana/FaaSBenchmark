@@ -34,7 +34,7 @@ def decode(video, start, duration, chunkdir):
         "-i",  video, 
         "-ss", start, 
         "-t",  duration,
-        '-vf', 'fps=8',
+        '-vf', 'fps=4',
         os.path.join(chunkdir, 'frame_%04d.png')  
     ]
     subprocess.run(
@@ -48,27 +48,25 @@ def decode(video, start, duration, chunkdir):
 
 def main(args):
 
-    # amazone key         
     key = args.get("key")
+
     access = args.get("access")
     
-    # start decoding  at n seconds
-    start = args.get("start", "00:00:06")   #toparam
-    # decode n seconds of video               
-    duration = args.get("duration", "00:00:06")  #toparam
-    # Path to your input video
-    # "chunkdir" toparam
-    chunkdir = args.get("chunkdir", "chunkdir")
+    start = args.get("start", "6")   # start decoding  at n seconds
+
+    duration = args.get("duration", "6")  # decode n seconds of video 
+
+    chunkdir = args.get("chunkdir", "chunkdir") # path to the decode result (frames dicrectory)
 
     video = os.path.join("/app", 'queen.mp4')  # pull to amazone
 
-    decode(video, start, duration, chunkdir) # "chunkdir" toparam
+    decode(video, str(start), str(duration), chunkdir)  
     
     push(chunkdir, key, access) 
 	
     return {
         "status" : "Ok",
-        "chunkdir": chunkdir,   # "chunkdir" toparam
+        "chunkdir": chunkdir,    
         "key" : args.get("key"),
         "access" : args.get("access")
     }
