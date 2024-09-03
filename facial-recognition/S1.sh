@@ -2,44 +2,32 @@
 
 # Check if the correct number of arguments is provided
 if [ "$#" -ne 2 ]; then
-  echo "Usage: $0 <num_processes> <video_time>"
+  echo "Usage: $0 <proc> <duration>"
+  echo "proc : number of process to run"
+  echo "duration : total video duration"
+
   exit 1
 fi
 
-num_processes=$1
-video_time=$2
+process=$1
+duration=$2
 
 
-wsk action update S1 --sequence decode
+chunk_duration=$((duration / process))
 
-chunk_duration=$((video_time / num_processes))
+wsk action update S1 --timeout 600000 --sequence decode,scenechange,facerec,draw
 
-for ((i = 0; i < num_processes; i++)); do
+for ((i = 0; i < process; i++)); do
 
-  start_time=$((i * chunk_duration))
-
-  if [ $i -eq $((num_processes - 1)) ]; then
-    duration=$((video_time - start_time))
-
-  else
-    duration=$chunk_duration
-    
-  fi
-  
-  wsk action invoke S1 -r --param key $AWS_ACCESS_KEY_ID  --param access $AWS_SECRET_ACCESS_KEY --param start $start_time --param duration $duration --param chunkdir "chunk.$i" &
-  sleep 1
-  echo "Started process $i for chunk starting at $start_time with duration $duration" 
+    wsk action invoke S1 -r \
+        --param key $AWS_ACCESS_KEY_ID \
+        --param access $AWS_SECRET_ACCESS_KEY \
+        --param start $((i * chunk_duration)) \
+        --param duration $chunk_duration \
+        --param chunkdir "chunk.$i" &
 
 done
 
 wait
 
-echo "All video chunks have been processed."
-
-
-
-# wsk action update S1.$i   --sequence decode
-#   wsk action update decode.$i --timeout 50000  --memory 512 --docker onanad/action-python-v3.9:decode.$i decode/__main__.py --web true
-
-
-
+echo "All actions have been invoked."
