@@ -1,5 +1,6 @@
 import subprocess
 import os
+import datetime
 import boto3
 
 
@@ -49,24 +50,40 @@ def decode(video, start, duration, chunkdir):
 def main(args):
 
     key = args.get("key")
-
     access = args.get("access")
-    
-    start = args.get("start", "6")   # start decoding  at n seconds
 
-    duration = args.get("duration", "6")  # decode n seconds of video 
+    # start decoding  at n seconds
+    start = args.get("start", "6")
+    # decode n seconds of video    
+    duration = args.get("duration", "6")  
 
-    chunkdir = args.get("chunkdir", "chunkdir") # path to the decode result (frames dicrectory)
+    # path to the decode result (frames dicrectory)
+    chunkdir = args.get("chunkdir", "chunkdir") 
 
     video = os.path.join("/app", 'queen.mp4')  # pull to amazone
 
-    decode(video, str(start), str(duration), chunkdir)  
+    process_begin = datetime.datetime.now()
+    decode(video, str(start), str(duration), chunkdir)
+    process_end =  datetime.datetime.now()
     
-    push(chunkdir, key, access) 
+    push_begin = datetime.datetime.now()
+    push(chunkdir, key, access)
+    push_end = datetime.datetime.now()
+
+    times = {
+
+        "decode" : {
+            "push" : (push_end - push_begin) / datetime.timedelta(seconds=1),
+            "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+        }
+    }
+
 	
     return {
+        
         "status" : "Ok",
         "chunkdir": chunkdir,    
         "key" : args.get("key"),
-        "access" : args.get("access")
+        "access" : args.get("access"),
+        "times" : times
     }
