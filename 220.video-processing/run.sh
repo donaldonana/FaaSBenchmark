@@ -22,7 +22,13 @@ for LIB in "${LIBRARY[@]}"; do
     	# Launch cpu-energy-meter in background and save her PID
 		cpu-energy-meter -r >> $ENERGY_FILE &
 		METER_PID=$!
-		wsk action invoke proc  --result  --param bib "$LIB" --param key $AWS_ACCESS_KEY_ID  --param access $AWS_SECRET_ACCESS_KEY --param file "$VIDEO" >> $RESULT_FILE
+		
+		wsk action invoke proc  --r \
+		  	--param bib "$LIB" \
+			--param key $AWS_ACCESS_KEY_ID \
+			--param access $AWS_SECRET_ACCESS_KEY \
+			--param file "$VIDEO" >> $RESULT_FILE
+
 		kill -SIGINT $METER_PID
 	
 	echo -e "$i"
