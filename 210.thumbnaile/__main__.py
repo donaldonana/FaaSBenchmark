@@ -119,7 +119,7 @@ def resize(args):
             'compute_time': process_time,
             'library' : args["bib"],
             'image' : args["file"]
-    }
+        }
 
 
 biblio = {'opencv' : opencv_resize, 'pillow' : pillow_resize, 'wand' : wand_resize, 'pygame' : pygame_resize}

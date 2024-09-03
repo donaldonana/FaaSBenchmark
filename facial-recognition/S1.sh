@@ -5,13 +5,11 @@ if [ "$#" -ne 2 ]; then
   echo "Usage: $0 <proc> <duration>"
   echo "proc : number of process to run"
   echo "duration : total video duration"
-
   exit 1
 fi
 
 process=$1
 duration=$2
-
 
 chunk_duration=$((duration / process))
 
@@ -25,7 +23,6 @@ for ((i = 0; i < process; i++)); do
         --param start $((i * chunk_duration)) \
         --param duration $chunk_duration \
         --param chunkdir "chunk.$i" &
-
 done
 
 wait
