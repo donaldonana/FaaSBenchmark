@@ -57,7 +57,6 @@ def pull(chunkdir, key, access):
 
 def draw(ref, chunkdir):
 
-    os.makedirs("newchunkdir", exist_ok=True)
 
     if ref["scene"]:
         for scene in ref["scenes"]:
@@ -66,30 +65,24 @@ def draw(ref, chunkdir):
                 box = scene["box"]
                 for file in scene["frames"]:
                     path = os.path.join(chunkdir, file)
-                    newpath = os.path.join("newchunkdir", file)
                     frame = cv2.imread(path)
                     cv2.rectangle(frame,  (box[0][0], box[0][1]) ,  (box[1][0], box[1][1]) , (0, 255, 0), 2)
-                    cv2.imwrite(newpath, frame)
-            else :
-                for file in scene["frames"]:
-                    path = os.path.join(chunkdir, file)
-                    newpath = os.path.join("newchunkdir", file)
-                    frame = cv2.imread(path)
-                    cv2.imwrite(newpath, frame)
+                    cv2.imwrite(path, frame)
+            # else :
+            #     for file in scene["frames"]:
+            #         path = os.path.join(chunkdir, file)
+            #         frame = cv2.imread(path)
+            #         cv2.imwrite(newpath, frame)
 
     else:
         files  = ref["scenes"].keys()
 
         for file in files:
             path = os.path.join(chunkdir, file)
-            newpath = os.path.join("newchunkdir", file)
             frame = cv2.imread(path)
             box = ref["scenes"][file]
             cv2.rectangle(frame,  (box[0][0], box[0][1]) ,  (box[1][0], box[1][1]) , (0, 255, 0), 2)
-            cv2.imwrite(newpath, frame)
-
-    shutil.rmtree(chunkdir)
-    shutil.move("newchunkdir", chunkdir)
+            cv2.imwrite(path, frame)
 
     return("Ok")
 
@@ -117,7 +110,7 @@ def main(args):
     push_end = datetime.datetime.now()
 
 
-    times = ref = args.get("times")
+    times = args.get("times")
 
     times["draw"] = {
         "push" : (push_end - push_begin) / datetime.timedelta(seconds=1),

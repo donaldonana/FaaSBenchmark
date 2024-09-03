@@ -3,6 +3,7 @@ import cv2
 import boto3
 import subprocess
 import face_recognition
+import datetime
 
 
 def pull(chunkdir, key, access):
@@ -99,17 +100,29 @@ def main(args):
 
 	ref = args.get("ref", None)
 
+	pull_begin = datetime.datetime.now()
 	pull(chunkdir, key, access)
+	pull_end = datetime.datetime.now()
 
+	process_begin = datetime.datetime.now()
 	refimg = matchFace(video)
-
 	result = facialRecPrime(ref, chunkdir, refimg)
+	process_end = datetime.datetime.now()
+
 
 	ref = {"scene" : False, "scenes" : result}
+
+	times = args.get("times")
+	
+	times["facerecprim"] = {
+        "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+        "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1)
+    }
 
 	return {
 		"status" : "Ok",
 		"ref" : ref,
+        "times" : times,
         "chunkdir": chunkdir ,   # "chunkdir" toparam
 		"key" : args.get("key"),
         "access" : args.get("access"),

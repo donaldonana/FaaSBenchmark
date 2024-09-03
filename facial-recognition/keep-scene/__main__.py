@@ -3,6 +3,7 @@ import os
 import cv2
 import shutil
 import boto3
+import datetime
 
 
 
@@ -95,16 +96,32 @@ def main(args):
     
     chunkdir = args.get("chunkdir", "chunkdir")
     
+    pull_begin = datetime.datetime.now()
     pull(chunkdir, key, access)
-    
+    pull_end = datetime.datetime.now()
+
+    process_begin = datetime.datetime.now()
     keep(ref, chunkdir)
-    
+    process_end = datetime.datetime.now()
+
+    push_begin = datetime.datetime.now()
     push(chunkdir, key, access)
+    push_end = datetime.datetime.now()
+
+
+    times = ref = args.get("times")
+
+    times["keep"] = {
+        "push" : (push_end - push_begin) / datetime.timedelta(seconds=1),
+        "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+        "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
+    }
     
     return {
         "status" : "Ok",
         "ref" : ref,
-        "chunkdir": chunkdir,   # "chunkdir" toparam
+        "times" : times,
+        "chunkdir": chunkdir,   
         "key" : args.get("key"),
         "access" : args.get("access")
     }
