@@ -1,15 +1,14 @@
 import os
 import boto3
-import cv2
-import imageio
 import datetime
 import subprocess
 from PIL import Image
-from moviepy.editor import VideoFileClip
 
 
 def video_to_gif_moviepy(input_video_path):
-    
+
+    from moviepy.editor import VideoFileClip
+
     # Load the video
     clip = VideoFileClip(input_video_path)
     
@@ -21,6 +20,8 @@ def video_to_gif_moviepy(input_video_path):
     
 
 def video_to_gif_imageio(input_video_path):
+
+    import imageio
 
     # Load the video
     reader = imageio.get_reader(input_video_path)
@@ -38,6 +39,8 @@ def video_to_gif_imageio(input_video_path):
     
 
 def video_to_gif_opencv(input_video_path):
+
+    import cv2
 
     # Open the video file
     cap = cv2.VideoCapture(input_video_path)

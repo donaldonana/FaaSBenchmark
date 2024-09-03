@@ -1,8 +1,10 @@
 #!/bin/bash
+
 VIDEO="6Mb.avi"
 
 # The list of library
 LIBRARY=("moviepy" "ffmpeg" "imageio" "opencv")
+
 RESULT_FILE="result/result.txt"
 ENERGY_DIR="result/energy"
 mkdir -p "$ENERGY_DIR/$VIDEO"

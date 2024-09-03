@@ -126,7 +126,6 @@ biblio = {'opencv' : opencv_resize, 'pillow' : pillow_resize, 'wand' : wand_resi
 
 def main(args):
  
- 
     # Apply Resize Operation 
     result = resize({
 
