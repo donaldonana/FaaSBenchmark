@@ -35,7 +35,7 @@ def decode(video, start, duration, chunkdir):
         "-i",  video, 
         "-ss", start, 
         "-t",  duration,
-        '-vf', 'fps=4',
+        '-vf', 'fps=2',
         os.path.join(chunkdir, 'frame_%04d.png')  
     ]
     subprocess.run(
@@ -60,7 +60,7 @@ def main(args):
     # path to the decode result (frames dicrectory)
     chunkdir = args.get("chunkdir", "chunkdir") 
 
-    video = os.path.join("/app", 'queen.mp4')  # pull to amazone
+    video = os.path.join("/app", 'nature.mp4')  # pull to amazone
 
     process_begin = datetime.datetime.now()
     decode(video, str(start), str(duration), chunkdir)

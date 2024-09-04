@@ -8,5 +8,8 @@ RUN pip install boto3
  
 COPY ./queen.mp4 /app
 
+COPY ./nature.mp4 /app
+
+
 
  

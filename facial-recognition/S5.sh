@@ -1,20 +1,30 @@
 #!/bin/bash
 
-# wsk action update decode --timeout 50000 --memory 512 --docker onanad/action-python-v3.9:decode decode/__main__.py --web true
+# Check if the correct number of arguments is provided
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 <process> <duration>"
+  echo "proc : number of process to run"
+  echo "duration : total video duration"
+  exit 1
+fi
 
-# wsk action update scenechange --timeout 50000 --memory 512 --docker onanad/action-python-v3.9:scenechange scene-change/__main__.py --web true
+process=$1
+duration=$2
 
-# wsk action update facerec --timeout 600000 --memory 1024 --docker onanad/action-python-v3.9:facerec facial/__main__.py --web true 
+chunk_duration=$((duration / process))
 
-# wsk action update keep --timeout 50000 --memory 512 --docker onanad/action-python-v3.9:keep keep-scene/__main__.py --web true 
+wsk action update S5  --sequence decode,scenechange,facerec,keep --timeout 50000
 
-# wsk action update facerecprim --timeout 600000 --memory 1024 --docker onanad/action-python-v3.9:facerecprim facial-prim/__main__.py --web true 
+for ((i = 0; i < process; i++)); do
 
-# wsk action update draw --timeout 50000 --memory 512 --docker onanad/action-python-v3.9:draw draw/__main__.py --web true 
+    wsk action invoke S5 -r --blocking \
+        --param key $AWS_ACCESS_KEY_ID \
+        --param access $AWS_SECRET_ACCESS_KEY \
+        --param start $((i * chunk_duration)) \
+        --param duration $chunk_duration \
+        --param chunkdir "chunk.$i" &
+done
 
+wait
 
-
-
-wsk action update S5 --sequence decode,scenechange,facerec,keep
-
-wsk action invoke S5 -r --param key $AWS_ACCESS_KEY_ID  --param access $AWS_SECRET_ACCESS_KEY
+echo "All actions have been invoked."

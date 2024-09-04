@@ -3,6 +3,8 @@ import os
 import cv2
 import numpy as np
 import boto3
+import datetime
+
  
 
 def pull(chunkdir, key, access):
@@ -72,13 +74,25 @@ def main(args):
 
     chunkdir = args.get("chunkdir", "chunkdir")
 
+    pull_begin = datetime.datetime.now()
     pull(chunkdir, key, access)
+    pull_end = datetime.datetime.now()
     
+    process_begin = datetime.datetime.now()
     result = sceneChange(chunkdir)
+    process_end = datetime.datetime.now()
+
+    times = args.get("times")
+
+    times["draw"] = {
+        "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+        "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
+    }
     
     return {
             "status": "OK",
 		    "ref" : result,
+            "times" : times,
             "chunkdir": chunkdir,
             "key" : args.get("key"),
             "access" : args.get("access")
