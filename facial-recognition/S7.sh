@@ -3,6 +3,7 @@
 
 # Check if the correct number of arguments is provided
 if [ "$#" -ne 4 ]; then
+
   echo "Usage: $0 <process> <duration> <schema> <video>"
   echo "proc : number of process to run"
   echo "duration : total video duration"
@@ -18,14 +19,13 @@ duration=$2
 schema=$3
 video=$4
 
-
 chunk_duration=$((duration / process))
 
-wsk action update S2  --sequence decode,facerecprim,draw,encode --timeout 50000
+wsk action update S7  --sequence decode,scenechange,facerec,keep,draw,encode --timeout 50000
 
 for ((i = 0; i < process; i++)); do
 
-    wsk action invoke S2 -r --blocking \
+    wsk action invoke S7 -r --blocking \
         --param key $AWS_ACCESS_KEY_ID \
         --param access $AWS_SECRET_ACCESS_KEY \
         --param start $((i * chunk_duration)) \

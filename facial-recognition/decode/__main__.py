@@ -60,6 +60,10 @@ def main(args):
     # path to the decode result (frames dicrectory)
     chunkdir = args.get("chunkdir", "chunkdir") 
 
+    schema = args.get("schema", "S1")
+
+    video = args.get("video", "queen.mp4") 
+
     video = os.path.join("/app", 'nature.mp4')  # pull to amazone
 
     process_begin = datetime.datetime.now()
@@ -75,7 +79,10 @@ def main(args):
         "decode" : {
             "push" : (push_end - push_begin) / datetime.timedelta(seconds=1),
             "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
-        }
+        },
+
+        "schema" : schema,
+        "video" : video
     }
 
 	

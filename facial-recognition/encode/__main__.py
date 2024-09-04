@@ -1,6 +1,7 @@
 import subprocess
 import os
 import boto3
+import re
 import datetime
 
 
@@ -44,24 +45,34 @@ def pull(chunkdir, key, access):
 
 def encode(chunkdir):
 
-	# decode
-    result = chunkdir+".mp4" 
-    chunkdir = chunkdir+"/frame_%004d.png"
-    args = [
-        "-framerate",  "4", 
-        "-i", chunkdir, 
-        "-c:v",  "libx264",
-        '-r', '8',
-        '-pix_fmt', "yuv420p",
-        result,
-    ]
-    process =  subprocess.run(
-        ["ffmpeg", '-y'] + args,
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
-    )
-	
-    return ("Ok")		
+    files = os.listdir('.')   
+    pattern = r'frame_(\d+)\.png'  
+    # Extract numbers from filenames that match the pattern
+    numbers = [int(re.search(pattern, f).group(1)) for f in files if re.search(pattern, f)]
+
+    if numbers:
+        start_number = min(numbers) 
+        result = chunkdir+".mp4" 
+        chunkdir = chunkdir+"/frame_%004d.png"
+        args = [
+            "-framerate",  "2", 
+            "-start_number", str(start_number), 
+            "-i", chunkdir, 
+            "-c:v",  "libx264",
+            '-t', '6',
+            '-pix_fmt', "yuv420p",
+            result,
+        ]
+        process =  subprocess.run(
+            ["ffmpeg", '-y'] + args,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+        )
+        
+        return (True)
+    
+    else:
+        return False
 
 
 
@@ -78,17 +89,22 @@ def main(args):
     pull_end = datetime.datetime.now()
 
     process_begin = datetime.datetime.now()
-    encode(chunkdir)
+    response = encode(chunkdir)
     process_end = datetime.datetime.now()
 
-    push_begin = datetime.datetime.now()
-    push(chunkdir, key, access)
-    push_end = datetime.datetime.now()
+    if response:
+        push_begin = datetime.datetime.now()
+        push(chunkdir, key, access)
+        push_end = datetime.datetime.now()
+        push_time = (push_end - push_begin) / datetime.timedelta(seconds=1)
+    else: 
+        push_time = 0
+
 
     times = args.get("times")
 
     times["encode"] = {
-        "push" : (push_end - push_begin) / datetime.timedelta(seconds=1),
+        "push" : push_time,
         "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
         "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
     }
@@ -96,8 +112,6 @@ def main(args):
     return {
         "status" : "Ok",
         "times" : times,
-        "key" : args.get("key"),
-        "access" : args.get("access")
     }
 
 

@@ -1,19 +1,15 @@
 #!/bin/bash
 
-wsk action update S1 --timeout 600000 --sequence decode,scenechange,facerec,draw
 
-for ((i = 0; i < 8; i++)); do
+for (( i = 1; i <= 1; i++ )); do
 
-    wsk action invoke S1 -r \
-        --param key $AWS_ACCESS_KEY_ID \
-        --param access $AWS_SECRET_ACCESS_KEY \
-        --param start $((i * chunk_duration)) \
-        --param duration 2 \
-        --param chunkdir "chunk.$i" &
+    cpu-energy-meter -r >> energy.txt &
+    METER_PID=$!
 
+        ./S9.sh 10 60 "S9" "nature.mp4"
 
+    kill -SIGINT $METER_PID
+
+    echo -e "$i"
+	
 done
-
-wait
-
-echo "All actions have been invoked."
