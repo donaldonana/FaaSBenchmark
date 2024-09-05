@@ -974,3 +974,603 @@ ok: updated action S1
         "video": "nature.mp4"
     }
 }
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.478058,
+            "push": 3.58267
+        },
+        "draw": {
+            "process": 0.000009,
+            "pull": 0.892078,
+            "push": 0.766335
+        },
+        "encode": {
+            "process": 0.000363,
+            "pull": 0.765437,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 2.716061,
+            "pull": 1.873294
+        },
+        "keep": {
+            "process": 0.001777,
+            "pull": 2.114908,
+            "push": 0.490247
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.244897,
+            "push": 2.638629
+        },
+        "draw": {
+            "process": 0.000005,
+            "pull": 0.854326,
+            "push": 0.567901
+        },
+        "encode": {
+            "process": 0.000078,
+            "pull": 0.629562,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 2.923932,
+            "pull": 2.249447
+        },
+        "keep": {
+            "process": 0.001172,
+            "pull": 4.184331,
+            "push": 0.574001
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.429372,
+            "push": 3.619348
+        },
+        "draw": {
+            "process": 0.000005,
+            "pull": 0.492407,
+            "push": 0.617862
+        },
+        "encode": {
+            "process": 0.000432,
+            "pull": 0.635972,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.770197,
+            "pull": 4.968491
+        },
+        "keep": {
+            "process": 0.001619,
+            "pull": 2.362229,
+            "push": 0.487553
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.257457,
+            "push": 2.385231
+        },
+        "draw": {
+            "process": 0.000003,
+            "pull": 0.7627,
+            "push": 0.468455
+        },
+        "encode": {
+            "process": 0.000097,
+            "pull": 0.460163,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.831708,
+            "pull": 5.34357
+        },
+        "keep": {
+            "process": 0.001038,
+            "pull": 2.254234,
+            "push": 0.514267
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.416971,
+            "push": 4.00674
+        },
+        "draw": {
+            "process": 0.000004,
+            "pull": 0.713091,
+            "push": 0.46397
+        },
+        "encode": {
+            "process": 0.000091,
+            "pull": 0.455882,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.74809,
+            "pull": 3.498821
+        },
+        "keep": {
+            "process": 0.001085,
+            "pull": 2.789796,
+            "push": 0.595756
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.355332,
+            "push": 3.42099
+        },
+        "draw": {
+            "process": 0.000005,
+            "pull": 0.464196,
+            "push": 0.43825
+        },
+        "encode": {
+            "process": 0.00009,
+            "pull": 0.431713,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 4.442305,
+            "pull": 10.301633
+        },
+        "keep": {
+            "process": 0.000994,
+            "pull": 2.085688,
+            "push": 0.466491
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.322606,
+            "push": 5.13019
+        },
+        "draw": {
+            "process": 0.000006,
+            "pull": 0.800059,
+            "push": 0.588446
+        },
+        "encode": {
+            "process": 0.000391,
+            "pull": 0.612277,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.77414,
+            "pull": 10.08812
+        },
+        "keep": {
+            "process": 0.001315,
+            "pull": 2.668675,
+            "push": 0.719089
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.179637,
+            "push": 5.686299
+        },
+        "draw": {
+            "process": 0.000003,
+            "pull": 0.442944,
+            "push": 0.4521
+        },
+        "encode": {
+            "process": 0.000095,
+            "pull": 0.482161,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.821705,
+            "pull": 7.043976
+        },
+        "keep": {
+            "process": 0.00187,
+            "pull": 4.064094,
+            "push": 0.453016
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.6024,
+            "push": 3.298206
+        },
+        "draw": {
+            "process": 0.000004,
+            "pull": 0.503274,
+            "push": 0.436508
+        },
+        "encode": {
+            "process": 0.000099,
+            "pull": 0.461824,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.195042,
+            "pull": 2.275977
+        },
+        "keep": {
+            "process": 0.001519,
+            "pull": 10.309711,
+            "push": 0.457823
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.586927,
+            "push": 4.581446
+        },
+        "draw": {
+            "process": 0.000004,
+            "pull": 0.4445,
+            "push": 0.4708
+        },
+        "encode": {
+            "process": 0.00007,
+            "pull": 0.524437,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.82579,
+            "pull": 6.41434
+        },
+        "keep": {
+            "process": 0.001065,
+            "pull": 4.480491,
+            "push": 0.462055
+        },
+        "schema": "S8",
+        "video": "nature.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.367278,
+            "push": 0.528798
+        },
+        "draw": {
+            "process": 0.000005,
+            "pull": 0.660026,
+            "push": 0.493167
+        },
+        "encode": {
+            "process": 0.000081,
+            "pull": 0.541503,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 1.168064,
+            "pull": 0.489248
+        },
+        "keep": {
+            "process": 0.000366,
+            "pull": 0.493781,
+            "push": 0.48226
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.366332,
+            "push": 0.498723
+        },
+        "draw": {
+            "process": 0.000003,
+            "pull": 0.545386,
+            "push": 0.707268
+        },
+        "encode": {
+            "process": 0.000106,
+            "pull": 1.105252,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 1.491575,
+            "pull": 0.518708
+        },
+        "keep": {
+            "process": 0.000478,
+            "pull": 0.599391,
+            "push": 0.49191
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.740919,
+            "push": 0.589308
+        },
+        "draw": {
+            "process": 0.000003,
+            "pull": 0.479192,
+            "push": 0.447488
+        },
+        "encode": {
+            "process": 0.000149,
+            "pull": 0.572997,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 0.875787,
+            "pull": 0.688592
+        },
+        "keep": {
+            "process": 0.000309,
+            "pull": 0.844976,
+            "push": 0.535222
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.424989,
+            "push": 0.635379
+        },
+        "draw": {
+            "process": 0.000006,
+            "pull": 0.564124,
+            "push": 0.498467
+        },
+        "encode": {
+            "process": 0.000168,
+            "pull": 0.548387,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 1.057507,
+            "pull": 0.809083
+        },
+        "keep": {
+            "process": 0.000254,
+            "pull": 0.467915,
+            "push": 0.534784
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.679886,
+            "push": 1.783874
+        },
+        "draw": {
+            "process": 0.000004,
+            "pull": 0.456082,
+            "push": 0.449651
+        },
+        "encode": {
+            "process": 0.000092,
+            "pull": 0.556228,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.47869,
+            "pull": 1.973335
+        },
+        "keep": {
+            "process": 0.001685,
+            "pull": 2.299854,
+            "push": 0.458362
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.653222,
+            "push": 2.787659
+        },
+        "draw": {
+            "process": 0.000006,
+            "pull": 0.815148,
+            "push": 0.446453
+        },
+        "encode": {
+            "process": 0.000101,
+            "pull": 0.468489,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 2.545973,
+            "pull": 2.42511
+        },
+        "keep": {
+            "process": 0.001586,
+            "pull": 3.362545,
+            "push": 0.462245
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.363827,
+            "push": 3.788465
+        },
+        "draw": {
+            "process": 0.163952,
+            "pull": 1.470362,
+            "push": 1.48849
+        },
+        "encode": {
+            "process": 0.0001,
+            "pull": 1.283146,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.733557,
+            "pull": 3.751122
+        },
+        "keep": {
+            "process": 0.112366,
+            "pull": 3.486036,
+            "push": 1.449936
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.489043,
+            "push": 5.95621
+        },
+        "draw": {
+            "process": 0.084675,
+            "pull": 3.692241,
+            "push": 1.29093
+        },
+        "encode": {
+            "process": 0.000084,
+            "pull": 1.429833,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 4.178671,
+            "pull": 10.044493
+        },
+        "keep": {
+            "process": 0.08452,
+            "pull": 2.216812,
+            "push": 1.515619
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.715728,
+            "push": 4.821077
+        },
+        "draw": {
+            "process": 0.110805,
+            "pull": 2.3731,
+            "push": 1.551778
+        },
+        "encode": {
+            "process": 0.000086,
+            "pull": 4.48594,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.400614,
+            "pull": 4.190066
+        },
+        "keep": {
+            "process": 0.123668,
+            "pull": 1.869305,
+            "push": 3.092632
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}
+{
+    "status": "Ok",
+    "times": {
+        "decode": {
+            "process": 0.472242,
+            "push": 5.869287
+        },
+        "draw": {
+            "process": 0.050316,
+            "pull": 3.497563,
+            "push": 1.385607
+        },
+        "encode": {
+            "process": 0.000079,
+            "pull": 2.206116,
+            "push": 0
+        },
+        "facerecprim": {
+            "process": 3.783147,
+            "pull": 3.525545
+        },
+        "keep": {
+            "process": 0.05013,
+            "pull": 4.944553,
+            "push": 1.373108
+        },
+        "schema": "S8",
+        "video": "queen.mp4"
+    }
+}

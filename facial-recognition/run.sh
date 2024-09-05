@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SCHEMA="S1"
-VIDEO="nature.mp4"
+SCHEMA="S8"
+VIDEO="queen.mp4"
 DURATION=60
 
 RESULT_FILE="result/result.txt"
