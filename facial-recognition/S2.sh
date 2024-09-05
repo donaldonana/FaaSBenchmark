@@ -37,4 +37,3 @@ done
 
 wait
 
-echo "All actions have been invoked."

@@ -35,5 +35,4 @@ for ((i = 0; i < process; i++)); do
 done
 
 wait
-
-echo "All actions have been invoked."
+ 

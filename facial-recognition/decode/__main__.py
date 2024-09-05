@@ -4,6 +4,15 @@ import datetime
 import boto3
 
 
+def pull(video, key, access):
+
+    # connexion to Remote Storage
+    bucket_name = 'donaldbucket'
+    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
+    # pull video from amazone
+    s3.download_file(bucket_name, video, video)
+
+
 def push(chunkdir, key, access):
 
     # connexion to Remote Storage
@@ -64,7 +73,9 @@ def main(args):
 
     video = args.get("video", "queen.mp4") 
 
-    video = os.path.join("/app", 'nature.mp4')  # pull to amazone
+    pull(video, key, access)
+
+    # video = os.path.join("/app", 'nature.mp4')  # pull to amazone
 
     process_begin = datetime.datetime.now()
     decode(video, str(start), str(duration), chunkdir)
