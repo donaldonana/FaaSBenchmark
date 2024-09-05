@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCHEMA="S8"
+SCHEMA="S3"
 VIDEO="queen.mp4"
 DURATION=60
 
