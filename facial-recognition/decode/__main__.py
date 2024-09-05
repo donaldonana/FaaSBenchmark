@@ -98,7 +98,6 @@ def main(args):
 
 	
     return {
-
         "status" : "Ok",
         "chunkdir": chunkdir,    
         "key" : args.get("key"),

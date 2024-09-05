@@ -33,3 +33,17 @@ cpu0_package_joules=1416.302124
 cpu0_core_joules=1328.523682
 cpu0_uncore_joules=13.579712
 cpu0_dram_joules=65.377808
+
+cpu_count=1
+duration_seconds=60.136011
+cpu0_package_joules=1448.114075
+cpu0_core_joules=1325.020508
+cpu0_uncore_joules=10.519897
+cpu0_dram_joules=68.312805
+
+cpu_count=1
+duration_seconds=43.560592
+cpu0_package_joules=911.051636
+cpu0_core_joules=807.223206
+cpu0_uncore_joules=22.271851
+cpu0_dram_joules=49.902832
