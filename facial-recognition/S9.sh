@@ -21,7 +21,7 @@ video=$4
 
 chunk_duration=$((duration / process))
 
-wsk action update S9  --sequence decode,facerecprim,keep,draw,encode --timeout 50000
+wsk action update S9  --sequence decode,facerecprim,keep,draw,encode > /dev/null
 
 for ((i = 0; i < process; i++)); do
 

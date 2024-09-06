@@ -24,7 +24,7 @@ duration=$2
 
 chunk_duration=$((duration / process))
 
-wsk action update S5  --sequence decode,scenechange,facerec,keep --timeout 50000
+wsk action update S5  --sequence decode,scenechange,facerec,keep,encode > /dev/null
 
 for ((i = 0; i < process; i++)); do
 
