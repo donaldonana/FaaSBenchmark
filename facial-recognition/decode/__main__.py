@@ -43,9 +43,10 @@ def decode(video, start, duration, chunkdir):
     args = [
         "-i",  video, 
         "-ss", start, 
-        "-t",  duration,
-        '-vf', 'fps=2',
-        os.path.join(chunkdir, 'frame_%04d.png')  
+        '-t', duration,      
+        '-vf', 'fps=4',
+        '-c:v', 'libwebp',              
+        os.path.join(chunkdir, 'frame_%04d.webp')   
     ]
     subprocess.run(
         ["ffmpeg", '-y'] + args,

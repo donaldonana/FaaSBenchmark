@@ -63,6 +63,7 @@ def encode(chunkdir):
             '-pix_fmt', "yuv420p",
             result,
         ]
+
         process =  subprocess.run(
             ["ffmpeg", '-y'] + args,
             stdin=subprocess.DEVNULL,
@@ -113,9 +114,6 @@ def main(args):
         "status" : "Ok",
         "times" : times,
     }
-
-
-
 
 
 
