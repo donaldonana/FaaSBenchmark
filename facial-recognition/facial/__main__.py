@@ -84,7 +84,7 @@ def main(args):
 
 	chunkdir = args.get("chunkdir", "chunkdir")
 
-	video = os.path.join("/app", 'queen.png')  #toparam
+	imgref = os.path.join("/app", 'queen.png')  #toparam
 
 	ref = args.get("ref")
 
@@ -93,7 +93,7 @@ def main(args):
 	pull_end = datetime.datetime.now()
 
 	process_begin = datetime.datetime.now()
-	refimg = matchFace(video)
+	refimg = matchFace(imgref)
 	result = facialRec(ref, chunkdir, refimg)
 	process_end = datetime.datetime.now()
 

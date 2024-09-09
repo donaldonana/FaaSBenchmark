@@ -66,7 +66,7 @@ def facialRecPrime(scenes, chunkdir, known_face_encodings):
 		return result
 	
 	else:
-		files = sorted([f for f in os.listdir(chunkdir) if f.endswith('.png')])
+		files = sorted([f for f in os.listdir(chunkdir) if f.endswith('.webp')])
 		for file in files:
             
 			path = os.path.join(chunkdir, file)
@@ -96,7 +96,7 @@ def main(args):
 
 	chunkdir = args.get("chunkdir", "chunkdir")
 
-	video = os.path.join("/app", 'queen.png')  #toparam
+	imgref = os.path.join("/app", 'queen.png')  #toparam
 
 	ref = args.get("ref", None)
 
@@ -105,7 +105,7 @@ def main(args):
 	pull_end = datetime.datetime.now()
 
 	process_begin = datetime.datetime.now()
-	refimg = matchFace(video)
+	refimg = matchFace(imgref)
 	result = facialRecPrime(ref, chunkdir, refimg)
 	process_end = datetime.datetime.now()
 

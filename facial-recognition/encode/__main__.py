@@ -46,14 +46,14 @@ def pull(chunkdir, key, access):
 def encode(chunkdir):
 
     files = os.listdir('.')   
-    pattern = r'frame_(\d+)\.png'  
+    pattern = r'frame_(\d+)\.webp'  
     # Extract numbers from filenames that match the pattern
     numbers = [int(re.search(pattern, f).group(1)) for f in files if re.search(pattern, f)]
 
     if numbers:
         start_number = min(numbers) 
         result = chunkdir+".mp4" 
-        chunkdir = chunkdir+"/frame_%004d.png"
+        chunkdir = chunkdir+"/frame_%004d.webp"
         args = [
             "-framerate",  "2", 
             "-start_number", str(start_number), 

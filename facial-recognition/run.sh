@@ -11,6 +11,8 @@ mkdir -p "$ENERGY_DIR/$SCHEMA"
 
 ENERGY_FILE="$ENERGY_DIR/$SCHEMA/$VIDEO.txt"
 
+./update.sh > /dev/null
+
 for (( i = 1; i <= 1; i++ )); do
 
     cpu-energy-meter -r >> $ENERGY_FILE &

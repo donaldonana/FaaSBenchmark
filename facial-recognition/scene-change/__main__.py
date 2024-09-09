@@ -35,7 +35,7 @@ def sceneChange(chunkdir, scene_threshold=0.1):
     prev_frame = None
     result = []
     frames = []
-    files = sorted([f for f in os.listdir(chunkdir) if f.endswith('.png')])
+    files = sorted([f for f in os.listdir(chunkdir) if f.endswith('.webp')])
 	
     for file in files:
         path = os.path.join(chunkdir, file)
