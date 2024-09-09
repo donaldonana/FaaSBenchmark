@@ -143,6 +143,5 @@ def main(args):
         "ref" : ref,
         "times" : times,
         "chunkdir": chunkdir,   
-        "key" : args.get("key"),
-        "access" : args.get("access")
+        "ipv4" : ipv4,
     }

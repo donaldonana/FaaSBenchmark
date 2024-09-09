@@ -7,7 +7,6 @@ import swiftclient
 
 
 
-
 def push(chunkdir, ipv4):
 
     # Swift identifiant

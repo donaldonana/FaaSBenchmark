@@ -27,13 +27,6 @@ def pull(video, ipv4):
         f.write(obj_tuple[1])
 
 
-    # # connexion to Remote Storage
-    # bucket_name = 'donaldbucket'
-    # s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    # # pull video from amazone
-    # s3.download_file(bucket_name, video, video)
-
-
 def push(chunkdir, ipv4):
 
     # create the chunk
@@ -64,15 +57,6 @@ def push(chunkdir, ipv4):
 
     with open(chunkdir + ".zip", 'rb') as f:
         conn.put_object(container, chunkdir + ".zip", contents=f.read())
-
-
-    # # connexion to Remote Storage
-    # bucket_name = 'donaldbucket'
-    # s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    
- 
-    # # push the chunk to amazone S3
-    # s3.upload_file(chunkdir + ".zip", bucket_name, chunkdir + ".zip")
 
     return ("Ok")
    
@@ -140,7 +124,6 @@ def main(args):
     return {
         "status" : "Ok",
         "chunkdir": chunkdir,    
-        "key" : args.get("key"),
-        "access" : args.get("access"),
+        "ipv4" : ipv4,
         "times" : times
     }
