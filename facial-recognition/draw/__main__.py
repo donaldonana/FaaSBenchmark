@@ -2,17 +2,12 @@ import subprocess
 import os
 import cv2
 import numpy as np
-import shutil
-import boto3
+import swiftclient
 import datetime
 
 
 
-def push(chunkdir, key, access):
-
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
+def push(chunkdir, ipv4):
 
     os.remove(chunkdir + ".zip")
     args = [
@@ -24,22 +19,52 @@ def push(chunkdir, key, access):
         stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
- 
-    # push the chunk to amazone S3
-    s3.upload_file(chunkdir + ".zip", bucket_name, chunkdir + ".zip")
 
+    # Swift identifiant
+    auth_url = f'http://{ipv4}/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
+
+	# Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+
+    container = 'whiskcontainer'
+
+    with open(chunkdir + ".zip", 'rb') as f:
+        conn.put_object(container, chunkdir + ".zip", contents=f.read())
+ 
     return ("Ok")
 
 
-def pull(chunkdir, key, access):
+def pull(chunkdir, ipv4):
 
     chunkdir = chunkdir + ".zip"
 
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    s3.download_file(bucket_name, chunkdir, chunkdir)
+    # Swift identifiant
+    auth_url = f'http://{ipv4}/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
 
+    # Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+
+    container = 'whiskcontainer'
+    
+    obj_tuple = conn.get_object(container, chunkdir)
+    with open(chunkdir, 'wb') as f:
+        f.write(obj_tuple[1])
+
+   
 	# unzip the chunk
     args = [
         chunkdir,
@@ -55,8 +80,8 @@ def pull(chunkdir, key, access):
     return ("Ok")
  
 
-def draw(ref, chunkdir):
 
+def draw(ref, chunkdir):
 
     if ref["scene"]:
         for scene in ref["scenes"]:

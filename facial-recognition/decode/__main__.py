@@ -1,7 +1,6 @@
 import subprocess
 import os
 import datetime
-import boto3
 import swiftclient
 
 
