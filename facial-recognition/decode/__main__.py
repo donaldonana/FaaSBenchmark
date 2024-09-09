@@ -2,22 +2,41 @@ import subprocess
 import os
 import datetime
 import boto3
+import swiftclient
 
 
-def pull(video, key, access):
 
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    # pull video from amazone
-    s3.download_file(bucket_name, video, video)
+def pull(video, ipv4):
+
+    # Swift identifiant
+    auth_url = f'http://{ipv4}/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
+
+	# Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+
+    container = 'whiskcontainer'
+    
+    obj_tuple = conn.get_object(container, video)
+    with open(video, 'wb') as f:
+        f.write(obj_tuple[1])
 
 
-def push(chunkdir, key, access):
+    # # connexion to Remote Storage
+    # bucket_name = 'donaldbucket'
+    # s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
+    # # pull video from amazone
+    # s3.download_file(bucket_name, video, video)
 
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
+
+def push(chunkdir, ipv4):
+
     # create the chunk
     args = [
         chunkdir + ".zip", 
@@ -28,9 +47,33 @@ def push(chunkdir, key, access):
         stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
+
+    # Swift identifiant
+    auth_url = f'http://{ipv4}/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
+
+	# Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+
+    container = 'whiskcontainer'
+
+    with open(chunkdir + ".zip", 'rb') as f:
+        conn.put_object(container, chunkdir + ".zip", contents=f.read())
+
+
+    # # connexion to Remote Storage
+    # bucket_name = 'donaldbucket'
+    # s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
+    
  
-    # push the chunk to amazone S3
-    s3.upload_file(chunkdir + ".zip", bucket_name, chunkdir + ".zip")
+    # # push the chunk to amazone S3
+    # s3.upload_file(chunkdir + ".zip", bucket_name, chunkdir + ".zip")
 
     return ("Ok")
    
@@ -44,7 +87,7 @@ def decode(video, start, duration, chunkdir):
         "-i",  video, 
         "-ss", start, 
         '-t', duration,      
-        '-vf', 'fps=2',
+        '-vf', 'fps=16',
         '-c:v', 'libwebp',              
         os.path.join(chunkdir, 'frame_%04d.webp')   
     ]
@@ -59,8 +102,7 @@ def decode(video, start, duration, chunkdir):
 
 def main(args):
 
-    key = args.get("key")
-    access = args.get("access")
+    ipv4 = args.get("ipv4", "192.168.1.120:8080")
 
     # start decoding  at n seconds
     start = args.get("start", "6")
@@ -74,16 +116,14 @@ def main(args):
 
     video = args.get("video", "queen.mp4") 
 
-    pull(video, key, access)
-
-    # video = os.path.join("/app", 'nature.mp4')  # pull to amazone
+    pull(video, ipv4)
 
     process_begin = datetime.datetime.now()
     decode(video, str(start), str(duration), chunkdir)
     process_end =  datetime.datetime.now()
     
     push_begin = datetime.datetime.now()
-    push(chunkdir, key, access)
+    push(chunkdir, ipv4)
     push_end = datetime.datetime.now()
 
     times = {
