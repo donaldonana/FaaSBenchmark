@@ -3,30 +3,56 @@ import os
 import boto3
 import re
 import datetime
+import swiftclient
 
 
 
-def push(chunkdir, key, access):
 
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
+def push(chunkdir, ipv4):
+
+    # Swift identifiant
+    auth_url = f'http://{ipv4}/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
+
+	# Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+
+    container = 'whiskcontainer'
  
-    # push the chunk to amazone S3
-    s3.upload_file(chunkdir + ".mp4", bucket_name, chunkdir + ".mp4")
-
+    with open(chunkdir + ".mp4", 'rb') as f:
+        conn.put_object(container, chunkdir + ".mp4", contents=f.read())
+ 
     return ("Ok")
 
 
-def pull(chunkdir, key, access):
+def pull(chunkdir, ipv4):
 
     chunkdir = chunkdir + ".zip"
 
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    # pull chunk from amazone S3
-    s3.download_file(bucket_name, chunkdir, chunkdir)
+    # Swift identifiant
+    auth_url = f'http://{ipv4}/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
+
+    # Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+
+    container = 'whiskcontainer'
+
+    obj = conn.get_object(container, chunkdir)
+    with open(chunkdir, 'wb') as f:
+        f.write(obj[1])
 
 	# unzip the chunk
     args = [
@@ -79,14 +105,12 @@ def encode(chunkdir):
 
 def main(args):
 
-    key = args.get("key")
-    
-    access = args.get("access")
+    ipv4 = args.get("ipv4", "192.168.1.120:8080")
     
     chunkdir = args.get("chunkdir", "chunkdir")
     
     pull_begin = datetime.datetime.now()
-    pull(chunkdir, key, access)
+    pull(chunkdir, ipv4)
     pull_end = datetime.datetime.now()
 
     process_begin = datetime.datetime.now()
@@ -95,12 +119,11 @@ def main(args):
 
     if response:
         push_begin = datetime.datetime.now()
-        push(chunkdir, key, access)
+        push(chunkdir, ipv4)
         push_end = datetime.datetime.now()
         push_time = (push_end - push_begin) / datetime.timedelta(seconds=1)
     else: 
         push_time = 0
-
 
     times = args.get("times")
 

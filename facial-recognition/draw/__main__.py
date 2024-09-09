@@ -1,7 +1,6 @@
 import subprocess
 import os
 import cv2
-import numpy as np
 import swiftclient
 import datetime
 
@@ -60,11 +59,10 @@ def pull(chunkdir, ipv4):
 
     container = 'whiskcontainer'
     
-    obj_tuple = conn.get_object(container, chunkdir)
+    obj = conn.get_object(container, chunkdir)
     with open(chunkdir, 'wb') as f:
-        f.write(obj_tuple[1])
+        f.write(obj[1])
 
-   
 	# unzip the chunk
     args = [
         chunkdir,
@@ -79,7 +77,6 @@ def pull(chunkdir, ipv4):
 
     return ("Ok")
  
-
 
 def draw(ref, chunkdir):
 
@@ -114,16 +111,14 @@ def draw(ref, chunkdir):
 
 def main(args):
     
-    key = args.get("key")
-    
-    access = args.get("access")
+    ipv4 = args.get("ipv4", "192.168.1.120:8080")
     
     ref = args.get("ref")
     
     chunkdir = args.get("chunkdir", "chunkdir")
     
     pull_begin = datetime.datetime.now()
-    pull(chunkdir, key, access)
+    pull(chunkdir, ipv4)
     pull_end = datetime.datetime.now()
 
     process_begin = datetime.datetime.now()
@@ -131,9 +126,8 @@ def main(args):
     process_end = datetime.datetime.now()
 
     push_begin = datetime.datetime.now()
-    push(chunkdir, key, access)
+    push(chunkdir, ipv4)
     push_end = datetime.datetime.now()
-
 
     times = args.get("times")
 
