@@ -1,6 +1,5 @@
 import subprocess
 import os
-import boto3
 import re
 import datetime
 import swiftclient
@@ -70,7 +69,7 @@ def pull(chunkdir, ipv4):
 
 def encode(chunkdir):
 
-    files = os.listdir('.')   
+    files = os.listdir(chunkdir)   
     pattern = r'frame_(\d+)\.webp'  
     # Extract numbers from filenames that match the pattern
     numbers = [int(re.search(pattern, f).group(1)) for f in files if re.search(pattern, f)]
@@ -80,7 +79,7 @@ def encode(chunkdir):
         result = chunkdir+".mp4" 
         chunkdir = chunkdir+"/frame_%004d.webp"
         args = [
-            "-framerate",  "2", 
+            "-framerate",  "10", 
             "-start_number", str(start_number), 
             "-i", chunkdir, 
             "-c:v",  "libx264",
@@ -135,6 +134,7 @@ def main(args):
     return {
         "status" : "Ok",
         "times" : times,
+        "chunkdir" : chunkdir,
     }
 
 

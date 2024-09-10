@@ -70,7 +70,7 @@ def decode(video, start, duration, chunkdir):
         "-i",  video, 
         "-ss", start, 
         '-t', duration,      
-        '-vf', 'fps=16',
+        '-vf', 'fps=10',
         '-c:v', 'libwebp',              
         os.path.join(chunkdir, 'frame_%04d.webp')   
     ]

@@ -2,7 +2,7 @@
 
 SCHEMA="S3"
 VIDEO="queen.mp4"
-DURATION=60
+DURATION=32
 
 RESULT_FILE="result/result.txt"
 RESULT_FILE="result/result.txt"

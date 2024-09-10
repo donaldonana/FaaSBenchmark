@@ -20,7 +20,7 @@ video=$4
 
 chunk_duration=$((duration / process))
 
-wsk action update S1  --sequence decode,scenechange,facerec   > /dev/null
+wsk action update S1  --sequence decode,scenechange,facerec,draw,encode  > /dev/null
 
 for ((i = 0; i < process; i++)); do
 

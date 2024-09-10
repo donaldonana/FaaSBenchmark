@@ -29,8 +29,7 @@ wsk action update S5  --sequence decode,scenechange,facerec,keep,encode > /dev/n
 for ((i = 0; i < process; i++)); do
 
     wsk action invoke S5 -r --blocking \
-        --param key $AWS_ACCESS_KEY_ID \
-        --param access $AWS_SECRET_ACCESS_KEY \
+        --param ipv4 "130.190.119.61" \
         --param start $((i * chunk_duration)) \
         --param duration $chunk_duration \
         --param schema $schema \

@@ -31,9 +31,9 @@ def pull(chunkdir, ipv4):
 
 	# unzip the chunk
 	args = [
-        "/app/" + chunkdir,
+        chunkdir,
 		"-d",
-        "/app/"  
+        "./"  
     ]
 	
 	subprocess.run(
@@ -60,7 +60,7 @@ def matchFace(imgref):
 def facialRecPrime(scenes, chunkdir, known_face_encodings):
 
 	result = {}
-	chunkdir = "/app/"+chunkdir
+	chunkdir = chunkdir
 
 	if scenes:
 		for scene in scenes :
