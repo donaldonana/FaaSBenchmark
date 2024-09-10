@@ -83,7 +83,7 @@ def encode(chunkdir):
             "-start_number", str(start_number), 
             "-i", chunkdir, 
             "-c:v",  "libx264",
-            '-t', '6',
+            '-t', '3',
             '-pix_fmt', "yuv420p",
             result,
         ]
