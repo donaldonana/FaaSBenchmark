@@ -20,13 +20,12 @@ video=$4
 
 chunk_duration=$((duration / process))
 
-wsk action update S1  --sequence decode,scenechange,facerec,draw,encode  > /dev/null
+wsk action update S1  --sequence decode,scenechange,facerec   > /dev/null
 
 for ((i = 0; i < process; i++)); do
 
     wsk action invoke S1 -r --blocking \
-        --param key $AWS_ACCESS_KEY_ID \
-        --param access $AWS_SECRET_ACCESS_KEY \
+        --param ipv4 "130.190.119.61" \
         --param start $((i * chunk_duration)) \
         --param duration $chunk_duration \
         --param schema $schema \

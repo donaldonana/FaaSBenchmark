@@ -2,17 +2,15 @@ import subprocess
 import os
 import cv2
 import shutil
-import boto3
 import datetime
+import swiftclient
 
 
 
-def push(chunkdir, key, access):
 
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
+def push(chunkdir, ipv4):
 
+     
     os.remove(chunkdir + ".zip")
     args = [
         chunkdir + ".zip", 
@@ -23,23 +21,51 @@ def push(chunkdir, key, access):
         stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
+
+    # Swift identifiant
+    auth_url = f'http://{ipv4}:8080/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
+
+	# Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
  
-    # push the chunk to amazone S3
-    s3.upload_file(chunkdir + ".zip", bucket_name, chunkdir + ".zip")
+    container = 'whiskcontainer'
+
+    with open(chunkdir + ".zip", 'rb') as f:
+        conn.put_object(container, chunkdir + ".zip", contents=f.read())
 
     return ("Ok")
 
 
-def pull(chunkdir, key, access):
+def pull(chunkdir, ipv4):
 
     chunkdir = chunkdir + ".zip"
 
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    # pull chunk from amazone S3
-    s3.download_file(bucket_name, chunkdir, chunkdir)
+    # Swift identifiant
+    auth_url = f'http://{ipv4}:8080/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
 
+	# Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+
+    container = 'whiskcontainer'
+
+    obj_tuple = conn.get_object(container, chunkdir)
+    with open(chunkdir, 'wb') as f:
+        f.write(obj_tuple[1])
+ 
 	# unzip the chunk
     args = [
         chunkdir,
@@ -88,16 +114,14 @@ def keep(ref, chunkdir):
 
 def main(args):
     
-    key = args.get("key")
-    
-    access = args.get("access")
+    ipv4 = args.get("ipv4")
     
     ref = args.get("ref")
     
     chunkdir = args.get("chunkdir", "chunkdir")
     
     pull_begin = datetime.datetime.now()
-    pull(chunkdir, key, access)
+    pull(chunkdir, ipv4)
     pull_end = datetime.datetime.now()
 
     process_begin = datetime.datetime.now()
@@ -105,7 +129,7 @@ def main(args):
     process_end = datetime.datetime.now()
 
     push_begin = datetime.datetime.now()
-    push(chunkdir, key, access)
+    push(chunkdir, ipv4)
     push_end = datetime.datetime.now()
 
 
@@ -122,6 +146,5 @@ def main(args):
         "ref" : ref,
         "times" : times,
         "chunkdir": chunkdir,   
-        "key" : args.get("key"),
-        "access" : args.get("access")
+        "ipv4" : args.get("ipv4")
     }

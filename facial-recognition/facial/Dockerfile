@@ -8,7 +8,10 @@ RUN python3 -m pip install opencv-Python
 
 RUN pip install face_recognition
 
-RUN pip install boto3
+# RUN pip install boto3
+
+RUN pip install python-swiftclient
+
 
 COPY ./queen.png /app
 

@@ -1,32 +1,48 @@
 import os
 import cv2
-import boto3
 import subprocess
 import face_recognition
 import datetime
+import swiftclient
 
 
-def pull(chunkdir, key, access):
 
-    chunkdir = chunkdir + ".zip"
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    # pull chunk from amazone S3
-    s3.download_file(bucket_name, chunkdir, "/app/" + chunkdir)
+def pull(chunkdir, ipv4):
+
+	chunkdir = chunkdir + ".zip"
+
+    # Swift identifiant
+	auth_url = f'http://{ipv4}:8080/auth/v1.0'
+	username = 'test:tester'
+	password = 'testing'
+
+    # Connect to Swift
+	conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+
+	container = 'whiskcontainer'
+	obj = conn.get_object(container, chunkdir)
+	with open(chunkdir, 'wb') as f:
+		f.write(obj[1])
+
 	# unzip the chunk
-    args = [
+	args = [
         "/app/" + chunkdir,
 		"-d",
         "/app/"  
     ]
-    subprocess.run(
+	
+	subprocess.run(
         ["unzip"] + args,
         stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
 
-    return ("Ok")
+	return ("Ok")
 
 
 def matchFace(imgref):
@@ -90,9 +106,7 @@ def facialRecPrime(scenes, chunkdir, known_face_encodings):
 def main(args):
 
     # amazone key         
-	key = args.get("key")
-
-	access = args.get("access")
+	ipv4 = args.get("ipv4", "192.168.1.120")
 
 	chunkdir = args.get("chunkdir", "chunkdir")
 
@@ -101,7 +115,7 @@ def main(args):
 	ref = args.get("ref", None)
 
 	pull_begin = datetime.datetime.now()
-	pull(chunkdir, key, access)
+	pull(chunkdir, ipv4)
 	pull_end = datetime.datetime.now()
 
 	process_begin = datetime.datetime.now()
@@ -124,6 +138,5 @@ def main(args):
 		"ref" : ref,
         "times" : times,
         "chunkdir": chunkdir ,   # "chunkdir" toparam
-		"key" : args.get("key"),
-        "access" : args.get("access"),
+		"ipv4" : ipv4
 	}

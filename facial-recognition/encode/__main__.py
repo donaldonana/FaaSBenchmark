@@ -10,7 +10,7 @@ import swiftclient
 def push(chunkdir, ipv4):
 
     # Swift identifiant
-    auth_url = f'http://{ipv4}/auth/v1.0'
+    auth_url = f'http://{ipv4}:8080/auth/v1.0'
     username = 'test:tester'
     password = 'testing'
 
@@ -35,7 +35,7 @@ def pull(chunkdir, ipv4):
     chunkdir = chunkdir + ".zip"
 
     # Swift identifiant
-    auth_url = f'http://{ipv4}/auth/v1.0'
+    auth_url = f'http://{ipv4}:8080/auth/v1.0'
     username = 'test:tester'
     password = 'testing'
 
@@ -104,7 +104,7 @@ def encode(chunkdir):
 
 def main(args):
 
-    ipv4 = args.get("ipv4", "192.168.1.120:8080")
+    ipv4 = args.get("ipv4", "192.168.1.120")
     
     chunkdir = args.get("chunkdir", "chunkdir")
     

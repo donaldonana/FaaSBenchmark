@@ -1,6 +1,5 @@
 import os
 import cv2
-import boto3
 import subprocess
 import face_recognition
 import datetime
@@ -14,7 +13,7 @@ def pull(chunkdir, ipv4):
 	chunkdir = chunkdir + ".zip"
 
     # Swift identifiant
-	auth_url = f'http://{ipv4}/auth/v1.0'
+	auth_url = f'http://{ipv4}:8080/auth/v1.0'
 	username = 'test:tester'
 	password = 'testing'
 
@@ -33,11 +32,11 @@ def pull(chunkdir, ipv4):
 
 	# unzip the chunk
 	args = [
-        "/app/" + chunkdir,
+        chunkdir,
 		"-d",
-        "/app/"  
+        "./"  
     ]
-	
+
 	subprocess.run(
         ["unzip"] + args,
         stdin=subprocess.DEVNULL,
@@ -61,7 +60,6 @@ def matchFace(imgref):
 def facialRec(scenes, chunkdir, known_face_encodings):
 
 	result = []
-	chunkdir = "/app/"+chunkdir
 
 	for scene in scenes :
 		find = False
@@ -96,7 +94,7 @@ def facialRec(scenes, chunkdir, known_face_encodings):
 def main(args):
 
     # amazone key         
-	ipv4 = args.get("ipv4", "192.168.1.120:8080")
+	ipv4 = args.get("ipv4", "192.168.1.120")
 
 	chunkdir = args.get("chunkdir", "chunkdir")
 
@@ -107,6 +105,8 @@ def main(args):
 	pull_begin = datetime.datetime.now()
 	pull(chunkdir, ipv4)
 	pull_end = datetime.datetime.now()
+
+	# frame_files = sorted([f for f in os.listdir("./")])
 
 	process_begin = datetime.datetime.now()
 	refimg = matchFace(imgref)

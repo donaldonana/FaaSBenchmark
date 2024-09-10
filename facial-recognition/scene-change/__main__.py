@@ -2,25 +2,39 @@ import subprocess
 import os
 import cv2
 import numpy as np
-import boto3
 import datetime
+import swiftclient
+
 
  
 
-def pull(chunkdir, key, access):
+def pull(chunkdir, ipv4):
 
     chunkdir = chunkdir + ".zip"
-    # connexion to Remote Storage
-    bucket_name = 'donaldbucket'
-    s3 = boto3.client('s3', aws_access_key_id=key, aws_secret_access_key=access)
-    # pull chunk from amazone S3
-    s3.download_file(bucket_name, chunkdir, chunkdir)
-	# unzip the chunk
+    auth_url = f'http://{ipv4}:8080/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
+   
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+   
+    container = 'whiskcontainer'
+   
+    obj_tuple = conn.get_object(container, chunkdir)
+   
+    with open(chunkdir, 'wb') as f:
+        f.write(obj_tuple[1])
+        
     args = [
         chunkdir,
 		"-d",
         "./"  
     ]
+
     subprocess.run(
         ["unzip"] + args,
         stdin=subprocess.DEVNULL,
@@ -68,14 +82,12 @@ def sceneChange(chunkdir, scene_threshold=0.1):
  
 def main(args):
 	
-    key = args.get("key")
-
-    access = args.get("access")
+    ipv4 = args.get("ipv4")
 
     chunkdir = args.get("chunkdir", "chunkdir")
 
     pull_begin = datetime.datetime.now()
-    pull(chunkdir, key, access)
+    pull(chunkdir, ipv4)
     pull_end = datetime.datetime.now()
     
     process_begin = datetime.datetime.now()
@@ -84,7 +96,7 @@ def main(args):
 
     times = args.get("times")
 
-    times["draw"] = {
+    times["sceneChange"] = {
         "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
         "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
     }
@@ -94,6 +106,5 @@ def main(args):
 		    "ref" : result,
             "times" : times,
             "chunkdir": chunkdir,
-            "key" : args.get("key"),
-            "access" : args.get("access")
+            "ipv4" : ipv4
             }
