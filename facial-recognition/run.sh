@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IPV4="130.190.119.61"
-SCHEMA="S9"
+SCHEMA="S1"
 VIDEO="queen.mp4"
 DURATION=32
 

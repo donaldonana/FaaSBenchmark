@@ -8,3 +8,5 @@ docker push onanad/action-python-v3.9:decode
 wsk action update decode --memory 200 --docker onanad/action-python-v3.9:decode __main__.py --web true 
 
 wsk action invoke decode --result  --param ipv4 "130.190.119.61" 
+
+# wsk action invoke decode --result  --param ipv4 "130.127.133.133" 
