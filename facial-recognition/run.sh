@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IPV4="130.190.119.61"
-SCHEMA="S1"
+SCHEMA="S9"
 VIDEO="queen.mp4"
 DURATION=32
 
@@ -24,6 +24,8 @@ for (( i = 1; i <= 1; i++ )); do
     kill -SIGINT $METER_PID
 
     echo -e "$i"
+
+    sleep 3
 	
 done
 
