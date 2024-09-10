@@ -1,6 +1,7 @@
 #!/bin/bash
 
-SCHEMA="S3"
+IPV4="130.190.119.61"
+SCHEMA="S1"
 VIDEO="queen.mp4"
 DURATION=32
 
@@ -18,7 +19,7 @@ for (( i = 1; i <= 1; i++ )); do
     cpu-energy-meter -r >> $ENERGY_FILE &
     METER_PID=$!
 
-        ./$SCHEMA.sh 10 $DURATION $SCHEMA $VIDEO  >> $RESULT_FILE
+        ./$SCHEMA.sh $IPV4 10 $DURATION $SCHEMA $VIDEO  >> $RESULT_FILE
 
     kill -SIGINT $METER_PID
 
