@@ -117,7 +117,10 @@ def main(args):
         },
 
         "schema" : schema,
-        "video" : video
+        "video" : video,
+        "expe" : args.get("expe", 0),
+        "chunkdir": chunkdir    
+
     }
 
 	

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-IPV4="130.190.119.61"
+IPV4="192.168.1.120"
 SCHEMA="S1"
 VIDEO="queen.mp4"
 DURATION=32
+PROCESS=10
 
-RESULT_FILE="result/result.txt"
 RESULT_FILE="result/result.txt"
 ENERGY_DIR="result/energy"
 mkdir -p "$ENERGY_DIR/$SCHEMA"
@@ -14,12 +14,13 @@ ENERGY_FILE="$ENERGY_DIR/$SCHEMA/$VIDEO.txt"
 
 ./update.sh > /dev/null
 
-for (( i = 1; i <= 1; i++ )); do
+for (( i = 1; i <= 2; i++ )); do
 
     cpu-energy-meter -r >> $ENERGY_FILE &
     METER_PID=$!
 
-        ./$SCHEMA.sh $IPV4 10 $DURATION $SCHEMA $VIDEO  >> $RESULT_FILE
+        # ./$SCHEMA.sh $IPV4 10 $DURATION $SCHEMA $VIDEO  >> $RESULT_FILE
+        python3 $SCHEMA.py $IPV4 $PROCESS $DURATION $SCHEMA $VIDEO $i  >> $RESULT_FILE
 
     kill -SIGINT $METER_PID
 

@@ -131,11 +131,7 @@ def main(args):
         "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
     }
     
-    return {
-        "status" : "Ok",
-        "times" : times,
-        "chunkdir" : chunkdir,
-    }
+    return  times
 
 
 
