@@ -15,15 +15,15 @@ if len(sys.argv) != 7:
     sys.exit(1)
 
 # Assigning the command-line arguments to variables
-ipv4 = sys.argv[1]
-process = int(sys.argv[2])
+ipv4     = sys.argv[1]
+process  = int(sys.argv[2])
 duration = int(sys.argv[3])
-schema = sys.argv[4]
-video = sys.argv[5]
-expe = sys.argv[6]
+schema   = sys.argv[4]
+video    = sys.argv[5]
+expe     = sys.argv[6]
 
 # update the action
-os.system("wsk action update S1 --sequence decode,scenechange,facerec,draw,encode  > /dev/null")
+os.system("wsk action update S3  --sequence decode,scenechange,facerecprim,draw,encode  > /dev/null")
 
 processes = []
 
@@ -32,10 +32,10 @@ chunk_duration = duration // process
 
 # Loop to invoke the action multiple times in parallel
 for i in range(process):   
-    
+
     start_time = i * chunk_duration
     command = [
-        "wsk", "action", "invoke", "S1", "-r", "--blocking",
+        "wsk", "action", "invoke", "S3", "-r", "--blocking",
         "--param", "ipv4", ipv4,
         "--param", "start", str(start_time),
         "--param", "duration", str(chunk_duration),

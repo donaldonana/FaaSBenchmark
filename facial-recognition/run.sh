@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IPV4="192.168.1.120"
-SCHEMA="S1"
+SCHEMA="S5"
 VIDEO="queen.mp4"
 DURATION=32
 PROCESS=10
@@ -14,13 +14,13 @@ ENERGY_FILE="$ENERGY_DIR/$SCHEMA/$VIDEO.txt"
 
 ./update.sh > /dev/null
 
-for (( i = 1; i <= 2; i++ )); do
+for (( i = 1; i <= 1; i++ )); do
 
     cpu-energy-meter -r >> $ENERGY_FILE &
     METER_PID=$!
 
-        # ./$SCHEMA.sh $IPV4 10 $DURATION $SCHEMA $VIDEO  >> $RESULT_FILE
-        python3 $SCHEMA.py $IPV4 $PROCESS $DURATION $SCHEMA $VIDEO $i  >> $RESULT_FILE
+        # /bash/$SCHEMA.sh $IPV4 10 $DURATION $SCHEMA $VIDEO  >> $RESULT_FILE
+        python3 python/$SCHEMA.py $IPV4 $PROCESS $DURATION $SCHEMA $VIDEO $i  >> $RESULT_FILE
 
     kill -SIGINT $METER_PID
 
