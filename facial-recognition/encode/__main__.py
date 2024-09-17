@@ -94,11 +94,10 @@ def encode(chunkdir):
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
         )
         
-        return (True)
+        return (process)
     
     else:
         return False
-
 
 
 def main(args):
@@ -129,10 +128,11 @@ def main(args):
         "push" : push_time,
         "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
         "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
+        "size" : os.path.getsize(chunkdir+".mp4"),
+        "response" : str(response)
     }
     
     return  times
 
 
-
-# ffmpeg -y -framerate 4 -i frame_%004d.png -c:v libx264 -r 8 -pix_fmt yuv420p output.mp4
+# ffmpeg -y -framerate 10 -i frame_%004d.webp -c:v libx264 -t 3 -pix_fmt yuv420p output.mp4

@@ -6,8 +6,6 @@ import datetime
 import swiftclient
 
 
- 
-
 def pull(chunkdir, ipv4):
 
     chunkdir = chunkdir + ".zip"
@@ -56,7 +54,7 @@ def sceneChange(chunkdir, scene_threshold=0.1):
         frame = cv2.imread(path)
         
         if prev_frame is not None:
-            diff = cv2.absdiff(frame, prev_frame)
+            diff = cv2.absdiff(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR), cv2.cvtColor(prev_frame, cv2.COLOR_RGB2BGR))
 			# Normalize the difference to a value between 0 and 1
             normalized_diff = np.sum(diff) / (diff.shape[0] * diff.shape[1] * diff.shape[2] * 255.0)
 

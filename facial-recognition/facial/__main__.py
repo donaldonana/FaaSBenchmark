@@ -6,8 +6,6 @@ import datetime
 import swiftclient
 
 
-
-
 def pull(chunkdir, ipv4):
 
 	chunkdir = chunkdir + ".zip"
@@ -117,7 +115,7 @@ def main(args):
 
 	times = args.get("times")
 	
-	times["facerecprim"] = {
+	times["facerec"] = {
         "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
         "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1)
     }

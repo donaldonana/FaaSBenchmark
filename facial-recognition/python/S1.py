@@ -30,10 +30,15 @@ processes = []
 # Calculate chunk duration
 chunk_duration = duration // process
 
-# Loop to invoke the action multiple times in parallel
+num_processes = process
+
 for i in range(process):   
 
     start_time = i * chunk_duration
+
+    if i == (num_processes - 1) :
+        chunk_duration = chunk_duration + (duration%num_processes)
+
     command = [
         "wsk", "action", "invoke", "S1", "-r", "--blocking",
         "--param", "ipv4", ipv4,
