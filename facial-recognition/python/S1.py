@@ -38,6 +38,7 @@ for i in range(process):
 
     if i == (num_processes - 1) :
         chunk_duration = chunk_duration + (duration%num_processes)
+        print(chunk_duration)
 
     command = [
         "wsk", "action", "invoke", "S1", "-r", "--blocking",
