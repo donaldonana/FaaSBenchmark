@@ -70,7 +70,7 @@ def decode(video, start, duration, chunkdir):
         "-i",  video, 
         "-ss", start, 
         '-t', duration,      
-        '-vf', 'fps=10',
+        '-vf', 'fps=6',
         '-c:v', 'libwebp',              
         os.path.join(chunkdir, 'frame_%04d.webp')   
     ]
@@ -114,7 +114,10 @@ def main(args):
         "decode" : {
             "push" : (push_end - push_begin) / datetime.timedelta(seconds=1),
             "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+
         },
+
+        "duration" :  duration,
 
         "schema" : schema,
         "video" : video,
@@ -122,7 +125,6 @@ def main(args):
         "chunkdir": chunkdir    
 
     }
-
 	
     return {
         "status" : "Ok",

@@ -67,7 +67,7 @@ def pull(chunkdir, ipv4):
     return ("Ok")
 
 
-def encode(chunkdir):
+def encode(chunkdir, duration):
 
     files = os.listdir(chunkdir)   
     pattern = r'frame_(\d+)\.webp'  
@@ -79,11 +79,11 @@ def encode(chunkdir):
         result = chunkdir+".mp4" 
         chunkdir = chunkdir+"/frame_%004d.webp"
         args = [
-            "-framerate",  "10", 
+            "-framerate",  "6", 
             "-start_number", str(start_number), 
             "-i", chunkdir, 
             "-c:v",  "libx264",
-            '-t', '3',
+            '-t', str(duration),
             '-pix_fmt', "yuv420p",
             result,
         ]
@@ -102,6 +102,10 @@ def encode(chunkdir):
 
 def main(args):
 
+    times = args.get("times")
+
+    duration = times["duration"]
+
     ipv4 = args.get("ipv4", "192.168.1.120")
     
     chunkdir = args.get("chunkdir", "chunkdir")
@@ -111,7 +115,7 @@ def main(args):
     pull_end = datetime.datetime.now()
 
     process_begin = datetime.datetime.now()
-    response = encode(chunkdir)
+    response = encode(chunkdir, duration)
     process_end = datetime.datetime.now()
 
     if response:
@@ -122,14 +126,13 @@ def main(args):
     else: 
         push_time = 0
 
-    times = args.get("times")
 
     times["encode"] = {
         "push" : push_time,
         "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
         "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
         "size" : os.path.getsize(chunkdir+".mp4"),
-        "response" : str(response)
+        # "response" : str(response)
     }
     
     return  times
