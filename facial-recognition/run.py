@@ -13,7 +13,6 @@ RESULT_FILE = "result/result.txt"
 ENERGY_DIR = f"result/energy/{SCHEMA}"
 ENERGY_FILE = f"{ENERGY_DIR}/{VIDEO}.txt"
 
-# Create directories if they don't exist
 os.makedirs(ENERGY_DIR, exist_ok=True)
  
 # Loop (this only runs once, but is kept for clarity)
