@@ -1,4 +1,5 @@
 from gtts import gTTS
+# from pydub import AudioSegment
 from io import BytesIO
 import datetime
 import swiftclient
@@ -26,32 +27,7 @@ def push(obj, ipv4):
         conn.put_object(container, obj, contents=f.read())
  
     return ("Ok")
-
-
-def pull(obj, ipv4):
-  
-    # Swift identifiant
-    auth_url = f'http://{ipv4}:8080/auth/v1.0'
-    username = 'test:tester'
-    password = 'testing'
-
-    # Connect to Swift
-    conn = swiftclient.Connection(
-    	authurl=auth_url,
-    	user=username,
-    	key=password,
-    	auth_version='1'
-	)
-
-    container = 'whiskcontainer'
-
-    obj = conn.get_object(container, obj)
-    with open(obj, 'wb') as f:
-        f.write(obj[1])
  
-
-    return ("Ok")
-
 
 def main(args):
     

@@ -1,8 +1,8 @@
-from pydub import AudioSegment
+# from pydub import AudioSegment
+import subprocess
 from io import BytesIO
 import os
 import swiftclient
-
 
 
 def push(obj, ipv4):
@@ -45,9 +45,9 @@ def pull(obj, ipv4):
 
     container = 'whiskcontainer'
 
-    obj = conn.get_object(container, obj)
-    with open(obj, 'wb') as f:
-        f.write(obj[1])
+    file = conn.get_object(container, obj)
+    with open("speeech.mp3", 'wb') as f:
+        f.write(file[1])
  
 
     return ("Ok")
@@ -57,21 +57,26 @@ def main(args):
 
     ipv4 = args.get("ipv4", "192.168.1.120")
 
-    # pull("speeech.mp3", ipv4)
+    pull("speeech.mp3", ipv4)
     
-    # mp3file =  open("speeech.mp3", "rb").read()
-    # input = BytesIO(mp3file)
-    # speech = AudioSegment.from_mp3(input)
-    # inputSize = len(input.getvalue())
-    # output = BytesIO()
-    # speech.export(output, format="wav")
-    # result = output.getvalue()
+    args = [
+             
+            "-i", "speeech.mp3", 
+             
+            "speeech.wav",
+        ]
     
-    # with open("speeech.wav", "wb") as f:
-    #         f.write(result)
+    subprocess.run(
+            ["ffmpeg", '-y'] + args,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+        )
+    
+    push("speeech.wav", ipv4)
+
     
     return {
-         "Outputfilesize" : "str(len(output.getvalue()))"
+         "Outputfilesize" : ipv4
          }
     
 
