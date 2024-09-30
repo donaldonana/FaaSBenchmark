@@ -1,4 +1,3 @@
-from io import BytesIO
 import swiftclient
 import subprocess
 import os
@@ -18,7 +17,6 @@ def push(obj, ipv4):
     	key=password,
     	auth_version='1'
 	)
-
     container = 'whiskcontainer'
  
     with open(obj, 'rb') as f:
@@ -41,13 +39,11 @@ def pull(obj, ipv4):
     	key=password,
     	auth_version='1'
 	)
-
     container = 'whiskcontainer'
 
     file = conn.get_object(container, obj)
     with open("speeech.mp3", 'wb') as f:
         f.write(file[1])
- 
 
     return ("Ok")
 

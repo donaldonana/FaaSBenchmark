@@ -3,7 +3,6 @@ import swiftclient
 import json
 
 
-
 def push(obj, ipv4):
 
     # Swift identifiant

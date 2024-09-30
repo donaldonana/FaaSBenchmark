@@ -1,9 +1,7 @@
-from gtts import gTTS
-# from pydub import AudioSegment
 from io import BytesIO
-import datetime
+from gtts import gTTS
 import swiftclient
-
+import datetime
 
 
 def push(obj, ipv4):
@@ -20,7 +18,6 @@ def push(obj, ipv4):
     	key=password,
     	auth_version='1'
 	)
-
     container = 'whiskcontainer'
  
     with open(obj, 'rb') as f:
@@ -32,9 +29,6 @@ def push(obj, ipv4):
 def main(args):
     
     
-    message = 'You’re doing a fantastic job! Keep up the great work.'
-    message = 'You are such an idiot! This is a fucking mess, and you screwed everything up!'
-    message = "I can't believe this shit happened again! You're a complete asshole!"
     message = "What a load of bullshit! You can't even get the simplest thing right."
 
     ipv4 = args.get("ipv4", "192.168.1.120")
