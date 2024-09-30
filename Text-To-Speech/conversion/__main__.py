@@ -1,8 +1,13 @@
-# from pydub import AudioSegment
 import subprocess
 from io import BytesIO
 import os
 import swiftclient
+import wave
+from profanity import profanity
+import soundfile as sf # type: ignore
+import librosa # type: ignore
+
+# from pydub import AudioSegment
 
 
 def push(obj, ipv4):
@@ -60,9 +65,7 @@ def main(args):
     pull("speeech.mp3", ipv4)
     
     args = [
-             
             "-i", "speeech.mp3", 
-             
             "speeech.wav",
         ]
     
@@ -74,9 +77,6 @@ def main(args):
     
     push("speeech.wav", ipv4)
 
-    
-    return {
-         "Outputfilesize" : ipv4
-         }
+    return {"Outputfilesize" : ipv4}
     
 
