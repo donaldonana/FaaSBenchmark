@@ -1,13 +1,7 @@
-import subprocess
 from io import BytesIO
-import os
 import swiftclient
-import wave
-from profanity import profanity
-import soundfile as sf # type: ignore
-import librosa # type: ignore
-
-# from pydub import AudioSegment
+import subprocess
+import os
 
 
 def push(obj, ipv4):
@@ -77,6 +71,6 @@ def main(args):
     
     push("speeech.wav", ipv4)
 
-    return {"Outputfilesize" : ipv4}
+    return {"Outputfilesize" : os.path.getsize("speeech.mp3")}
     
 

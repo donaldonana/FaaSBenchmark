@@ -1,15 +1,15 @@
 FROM openwhisk/action-python-v3.9
 
+# Set the working directory
 WORKDIR /app
 
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y 
+# Update apt-get and install necessary dependencies, including ffmpeg
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
+    && rm -rf /var/lib/apt/lists/*
  
+    
 RUN pip install python-swiftclient
-
-RUN pip install Wave
-
-RUN pip install profanity>=1.1
-
-RUN pip install librosa
-
-RUN pip install soundfile
+ 

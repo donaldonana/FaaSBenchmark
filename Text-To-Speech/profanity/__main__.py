@@ -27,7 +27,6 @@ def push(obj, ipv4):
     return ("Ok")
 
 
-
 def filter(text, char="*"):
     profanity.set_censor_characters("*")
     return profanity.censor(text)
@@ -51,7 +50,6 @@ def extract_indexes(text, char="*"):
     return indexes
     
     
-
 def main(args):
     
     message = "What a load of bullshit! You can't even get the simplest thing right."
@@ -60,15 +58,10 @@ def main(args):
     
     result = extract_indexes(filter(message))
     
-    # print(filter(message))
-    # print("MessageSize:" + str(len(message)))
-    # print("Number of Profanities:" + str(len(result)))
-    
-    
     with open("index.json", "w") as f:
             json.dump(result, f)
             
     push("index.json", ipv4)
 
-    return {"Outputfilesize" : ipv4}
+    return {"NumberofProfanities" : str(len(result))}
 
