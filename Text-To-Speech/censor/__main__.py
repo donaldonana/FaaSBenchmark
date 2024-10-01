@@ -58,45 +58,36 @@ def main(args):
     ipv4 = args.get("ipv4", "192.168.1.120")
 
     pull("speeech.wav", ipv4)
-    
-    with wave.open("speeech.wav", 'rb') as wav_file:
-        params = wav_file.getparams()
-        n_channels, sampwidth, framerate, n_frames = params[:4]
-        
-        # # Read the audio frames
-        frames = wav_file.readframes(n_frames)
-        
-        # # Convert audio frames to numpy array
-        audio = np.frombuffer(frames, dtype=np.int16)
-
-        audio = audio.copy() 
-
+    wav_file = wave.open("speeech.wav", 'rb')  
+    nframes = wav_file.getnframes()
+    frames = wav_file.readframes(nframes)
+    # Convert audio frames to numpy array
+    samples = np.frombuffer(frames, dtype=np.int16)
+    samples = samples.copy()
 
     pull("index.json", ipv4)
     with open("index.json", 'r') as f:
         indexes = json.load(f)
 
+    for index, s in enumerate(samples):
     
-    for start, end in indexes:
-        start_sample = int(start * framerate)
-        end_sample = int(end * framerate)
+        for start, end in indexes:
+            start_sample = int(start * len(samples))
+            end_sample = int(end * len(samples))
+
+            if index > start_sample and index < end_sample:
+                samples[index] = 0
         
-        # Mute the audio samples by setting them to 0
-        audio[start_sample:end_sample] = 0
-    
     # Convert the modified numpy array back to bytes
-    new_frames = audio.tobytes()
+    new_frames = samples.tobytes()
     
     # Write the new frames to a new WAV file
-    with wave.open("speeech.wav", 'wb') as wav_out:
-        wav_out.setparams(params)
+    with wave.open("censor_speeech.wav", 'wb') as wav_out:
+        wav_out.setparams(wav_file.getparams())
         wav_out.writeframes(new_frames)
 
     
-    push("speeech.wav", ipv4)
+    push("censor_speeech.wav", ipv4)
 
 
-    
     return {"result" : "Ok"}
-    
-

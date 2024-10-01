@@ -51,7 +51,7 @@ def extract_indexes(text, char="*"):
     
 def main(args):
     
-    message = "What a load of bullshit! You can't even get the simplest thing right."
+    message = "You are such an idiot! This is a fucking mess, and you screwed everything up!"
 
     ipv4 = args.get("ipv4", "192.168.1.120")
     
