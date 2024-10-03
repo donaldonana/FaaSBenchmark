@@ -93,7 +93,7 @@ def main(args):
             "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
             "push" : (push_end - push_begin) / datetime.timedelta(seconds=1)
          }
-         }
+        }
     
     return  {"response" : response}
     

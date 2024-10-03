@@ -7,5 +7,5 @@ docker push onanad/action-python-v3.9:profanity
 
 wsk action update profanity --memory 200 --docker onanad/action-python-v3.9:profanity __main__.py --web true 
 
-wsk action invoke profanity --result  --param ipv4 "130.190.118.137" 
+wsk action invoke profanity --result  --param ipv4 "130.190.117.182" 
 

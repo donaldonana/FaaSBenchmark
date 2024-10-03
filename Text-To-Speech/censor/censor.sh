@@ -7,4 +7,4 @@ docker push onanad/action-python-v3.9:censor
 
 wsk action update censor --memory 300 --docker onanad/action-python-v3.9:censor __main__.py --web true 
 
-wsk action invoke censor --result  --param ipv4 "192.168.83.190" 
+wsk action invoke censor --result  --param ipv4 "130.190.117.182" 

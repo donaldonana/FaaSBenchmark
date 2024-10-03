@@ -1,6 +1,8 @@
 from profanity import profanity
 import swiftclient
 import json
+import datetime
+
 
 
 
@@ -54,12 +56,17 @@ def push(obj, ipv4):
     return ("Ok")
 
 
-def filter(text, char="*"):
+def filter(file, char="*"):
+
+    with open(file, "r") as f:
+            message = f.read()
+
     profanity.set_censor_characters("*")
-    return profanity.censor(text)
+    return profanity.censor(message)
 
 
 def extract_indexes(text, char="*"):
+
     indexes = []
     in_word = False
     start = 0
@@ -74,25 +81,38 @@ def extract_indexes(text, char="*"):
                 # This is the first non-character
                 in_word = False
                 indexes.append(((start-1)/len(text),(index)/len(text)))
-    return indexes
+    
+    with open("index.json", "w") as f:
+            json.dump(indexes, f)
+
+    return "index.json", indexes
     
     
 def main(args):
-    
 
     ipv4 = args.get("ipv4", "192.168.1.120")
 
+    pull_begin = datetime.datetime.now()
     pull("texte.txt", ipv4)
+    pull_end = datetime.datetime.now()
 
-    with open("texte.txt", "r") as f:
-            message = f.read()
-    
-    result = extract_indexes(filter(message))
-    
-    with open("index.json", "w") as f:
-            json.dump(result, f)
-            
-    push("index.json", ipv4)
+    process_begin = datetime.datetime.now()
+    resultfile, result = extract_indexes(filter("texte.txt"))
+    process_end = datetime.datetime.now()
 
-    return {"NumberofProfanities" : str(len(result))}
+    push_begin = datetime.datetime.now()
+    push(resultfile, ipv4)
+    push_end = datetime.datetime.now()
+
+
+    response = {
+         "NumberofProfanities" : str(len(result)),
+         "profanity" : {
+            "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+            "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
+            "push" : (push_end - push_begin) / datetime.timedelta(seconds=1)
+         }
+        }
+
+    return {"response" : response}
 
