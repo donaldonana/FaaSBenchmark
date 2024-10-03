@@ -84,8 +84,8 @@ def main(args):
     push_begin = datetime.datetime.now()
     push(result, ipv4)
     push_end = datetime.datetime.now()
-    
-    return {
+
+    response = {
          "MessageSize" : str(len(message)),
          "fileSize" : os.path.getsize(result),
          "text2speech" : {
@@ -94,5 +94,7 @@ def main(args):
             "push" : (push_end - push_begin) / datetime.timedelta(seconds=1)
          }
          }
+    
+    return  {"response" : response}
     
 

@@ -1,5 +1,6 @@
 import swiftclient
 import subprocess
+import datetime
 import os
 
 
@@ -48,14 +49,10 @@ def pull(obj, ipv4):
     return ("Ok")
 
 
-def main(args):
+def conversion(file):
 
-    ipv4 = args.get("ipv4", "192.168.1.120")
-
-    pull("speeech.mp3", ipv4)
-    
     args = [
-            "-i", "speeech.mp3", 
+            "-i", file, 
             "speeech.wav",
         ]
     
@@ -65,8 +62,40 @@ def main(args):
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
         )
     
-    push("speeech.wav", ipv4)
 
-    return {"wavefilesize" : os.path.getsize("speeech.wav")}
+    return "speeech.wav"
+
+
+
+def main(args):
+
+    ipv4 = args.get("ipv4", "192.168.1.120")
+
+    response = args.get("times", {})
+
+    pull_begin = datetime.datetime.now()
+    pull("speeech.mp3", ipv4)
+    pull_end = datetime.datetime.now()
+    
+    process_begin = datetime.datetime.now()
+    result = conversion("speeech.mp3")
+    process_end = datetime.datetime.now()
+
+    
+    push_begin = datetime.datetime.now()
+    push(result, ipv4)
+    push_end = datetime.datetime.now()
+
+    response["wavefilesize"] = os.path.getsize(result)
+
+    response["conversion"] = {
+            "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+            "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
+            "push" : (push_end - push_begin) / datetime.timedelta(seconds=1)
+         }
+        
+ 
+
+    return {"response" :response}
     
 
