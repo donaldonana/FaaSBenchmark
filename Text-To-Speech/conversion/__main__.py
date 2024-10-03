@@ -67,6 +67,6 @@ def main(args):
     
     push("speeech.wav", ipv4)
 
-    return {"Outputfilesize" : os.path.getsize("speeech.mp3")}
+    return {"wavefilesize" : os.path.getsize("speeech.wav")}
     
 

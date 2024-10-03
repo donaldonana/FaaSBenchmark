@@ -9,4 +9,3 @@ wsk action update text2speech --memory 250 --docker onanad/action-python-v3.9:te
 
 wsk action invoke text2speech --result  --param ipv4 "130.190.118.137" 
 
-

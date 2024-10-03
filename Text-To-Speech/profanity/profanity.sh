@@ -9,4 +9,3 @@ wsk action update profanity --memory 200 --docker onanad/action-python-v3.9:prof
 
 wsk action invoke profanity --result  --param ipv4 "130.190.118.137" 
 
-

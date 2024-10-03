@@ -4,6 +4,7 @@ import os
 import json
 import wave
 import numpy as np
+import datetime
 
 
 def push(obj, ipv4):
@@ -53,19 +54,15 @@ def pull(obj, ipv4):
     return ("Ok")
 
 
-def main(args):
+def censor(file):
 
-    ipv4 = args.get("ipv4", "192.168.1.120")
-
-    pull("speeech.wav", ipv4)
-    wav_file = wave.open("speeech.wav", 'rb')  
+    wav_file = wave.open(file, 'rb')  
     nframes = wav_file.getnframes()
     frames = wav_file.readframes(nframes)
     # Convert audio frames to numpy array
     samples = np.frombuffer(frames, dtype=np.int16)
     samples = samples.copy()
 
-    pull("index.json", ipv4)
     with open("index.json", 'r') as f:
         indexes = json.load(f)
 
@@ -82,12 +79,35 @@ def main(args):
     new_frames = samples.tobytes()
     
     # Write the new frames to a new WAV file
-    with wave.open("censor_speeech.wav", 'wb') as wav_out:
+    with wave.open("censored.wav", 'wb') as wav_out:
         wav_out.setparams(wav_file.getparams())
         wav_out.writeframes(new_frames)
 
+    return "censored.wav"
+
+
+def main(args):
+
+    ipv4 = args.get("ipv4", "192.168.1.120")
     
-    push("censor_speeech.wav", ipv4)
+    pull_begin = datetime.datetime.now()
+    pull("speeech.wav", ipv4)
+    pull("index.json", ipv4)
+    pull_end = datetime.datetime.now()
+    
+    process_begin = datetime.datetime.now()
+    result = censor("speeech.wav")
+    process_end = datetime.datetime.now()
 
+    push_begin = datetime.datetime.now()
+    push(result, ipv4)
+    push_end = datetime.datetime.now()
 
-    return {"result" : "Ok"}
+   
+    return {
+        "censoredfilesize" : os.path.getsize("censored.wav"), 
+        "CensorProcess" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+        "CensorPull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
+        "CensorPush" : (push_end - push_begin) / datetime.timedelta(seconds=1)
+
+            }

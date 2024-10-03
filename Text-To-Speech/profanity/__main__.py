@@ -3,6 +3,34 @@ import swiftclient
 import json
 
 
+
+
+
+def pull(obj, ipv4):
+  
+    # Swift identifiant
+    auth_url = f'http://{ipv4}:8080/auth/v1.0'
+    username = 'test:tester'
+    password = 'testing'
+
+    out = obj 
+
+    # Connect to Swift
+    conn = swiftclient.Connection(
+    	authurl=auth_url,
+    	user=username,
+    	key=password,
+    	auth_version='1'
+	)
+    container = 'whiskcontainer'
+
+    file = conn.get_object(container, obj)
+    with open(out, 'wb') as f:
+        f.write(file[1])
+
+    return ("Ok")
+
+
 def push(obj, ipv4):
 
     # Swift identifiant
@@ -51,9 +79,13 @@ def extract_indexes(text, char="*"):
     
 def main(args):
     
-    message = "You are such an idiot! This is a fucking mess, and you screwed everything up!"
 
     ipv4 = args.get("ipv4", "192.168.1.120")
+
+    pull("texte.txt", ipv4)
+
+    with open("texte.txt", "r") as f:
+            message = f.read()
     
     result = extract_indexes(filter(message))
     
