@@ -5,9 +5,6 @@ import datetime
 import os
 
 
-
-
-
 def pull(obj, ipv4):
   
     # Swift identifiant
@@ -33,7 +30,6 @@ def pull(obj, ipv4):
     return ("Ok")
 
 
-
 def push(obj, ipv4):
 
     # Swift identifiant
@@ -54,17 +50,13 @@ def push(obj, ipv4):
         conn.put_object(container, obj, contents=f.read())
  
     return ("Ok")
- 
 
-def main(args):
-    
-    ipv4 = args.get("ipv4", "192.168.1.120")
 
-    pull("texte.txt", ipv4)
+def toSpeech(file):
 
-    with open("texte.txt", "r") as f:
+    with open(file, "r") as f:
             message = f.read()
-
+     
     tts = gTTS(text=message, lang='en')
     mp3fp = BytesIO()
     tts.write_to_fp(mp3fp)
@@ -72,12 +64,35 @@ def main(args):
     
     with open("speeech.mp3", "wb") as f:
             f.write(result)
+    
+    return "speeech.mp3", message
+ 
 
-    push("speeech.mp3", ipv4)
+def main(args):
+    
+    ipv4 = args.get("ipv4", "192.168.1.120")
+
+    pull_begin = datetime.datetime.now()
+    pull("texte.txt", ipv4)
+    pull_end = datetime.datetime.now()
+
+    
+    process_begin = datetime.datetime.now()
+    result, message = toSpeech("texte.txt")
+    process_end = datetime.datetime.now()
+
+    push_begin = datetime.datetime.now()
+    push(result, ipv4)
+    push_end = datetime.datetime.now()
     
     return {
          "MessageSize" : str(len(message)),
-         "fileSize" : os.path.getsize("speeech.mp3")
+         "fileSize" : os.path.getsize(result),
+         "text2speech" : {
+            "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+            "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
+            "push" : (push_end - push_begin) / datetime.timedelta(seconds=1)
+         }
          }
     
 
