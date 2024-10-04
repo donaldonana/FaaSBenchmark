@@ -89,6 +89,8 @@ def censor(file):
 def main(args):
 
     ipv4 = args.get("ipv4", "192.168.1.120")
+
+    response = args.get("response", {})
     
     pull_begin = datetime.datetime.now()
     pull("speeech.wav", ipv4)
@@ -103,11 +105,13 @@ def main(args):
     push(result, ipv4)
     push_end = datetime.datetime.now()
 
-   
-    return {
-        "censoredfilesize" : os.path.getsize("censored.wav"), 
-        "CensorProcess" : (process_end - process_begin) / datetime.timedelta(seconds=1),
-        "CensorPull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
-        "CensorPush" : (push_end - push_begin) / datetime.timedelta(seconds=1)
+    response["censoredfilesize"] = os.path.getsize("censored.wav")
 
-            }
+    response["conversion"] = {
+            "process" : (process_end - process_begin) / datetime.timedelta(seconds=1),
+            "pull" : (pull_end - pull_begin) / datetime.timedelta(seconds=1),
+            "push" : (push_end - push_begin) / datetime.timedelta(seconds=1)
+        }
+
+   
+    return  response

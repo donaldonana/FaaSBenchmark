@@ -71,7 +71,7 @@ def main(args):
 
     ipv4 = args.get("ipv4", "192.168.1.120")
 
-    response = args.get("times", {})
+    response = args.get("response", {})
 
     pull_begin = datetime.datetime.now()
     pull("speeech.mp3", ipv4)

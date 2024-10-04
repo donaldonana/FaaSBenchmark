@@ -95,6 +95,6 @@ def main(args):
          }
         }
     
-    return  {"response" : response}
+    return  {"response" : response, "ipv4" : ipv4}
     
 
