@@ -8,4 +8,4 @@ docker push onanad/action-python-v3.9:thumb
 
 wsk action update thumb --docker onanad/action-python-v3.9:thumb __main__.py --web true
 
-wsk action invoke thumb  --result  --param bib pillow  --param file 500b.JPEG --param ipv4 "192.168.1.120" 
+wsk action invoke thumb  --result  --param bib pillow  --param file 500b.JPEG --param ipv4 "130.190.118.116" 
