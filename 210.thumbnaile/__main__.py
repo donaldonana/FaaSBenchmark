@@ -153,6 +153,6 @@ def main(args):
 
     })
 
-    return {"body": result}
+    return result
     
  
