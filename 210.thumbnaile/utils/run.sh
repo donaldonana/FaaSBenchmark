@@ -5,8 +5,8 @@ IMAGE="500b.JPEG"
 # The list of library
 LIBRARY=("pillow" "wand" "pygame" "opencv")
 
-RESULT_FILE="result/result.txt"
-ENERGY_DIR="result/energy"
+RESULT_FILE="../result/result.txt"
+ENERGY_DIR="../result/energy"
 mkdir -p "$ENERGY_DIR/$IMAGE"
  
 # Iterate over each libarary in the array
