@@ -1,5 +1,7 @@
 resnet*.pth
 *.mp4
+*.csv
+*.txt
 *.png
 save.json
 saving.json
